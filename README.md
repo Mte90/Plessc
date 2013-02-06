@@ -4,6 +4,7 @@ This software require:
 * Python 3
 * PyQT
 * lessc (node-less on many distro)
+* All OS! ( *unix better)
 
 #ScreenShot
 ![Screenshot](screenshot.png "1.0 beta")
