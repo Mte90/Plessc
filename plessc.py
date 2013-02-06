@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import os,sys,subprocess
+import os,sys
+from subprocess import Popen, PIPE
 
 from ui_MainWindow import Ui_MainWindow
 from settings import SettingDialog
@@ -106,8 +107,8 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             name.replace('.css','.min.css')
             command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"')
             os.system(str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + name + '"' ))
-            stdout = os.popen(command)[1].read()
-
+            stdout = Popen(command, shell=True, stdout=PIPE).stdout
+            stdout = str(stdout.read()).replace("b''",'')
             print(stdout)
             stdout = self.replace_all(stdout)
             self.ui.log.setHtml(stdout)
@@ -115,7 +116,8 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         else:
             #if standard = 0 False
             command = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"' )
-            stdout = subprocess.Popen(command, stdout=subprocess.PIPE).stdout.read()
+            stdout = Popen(command, shell=True, stdout=PIPE).stdout
+            stdout = str(stdout.read()).replace("b''",'')
             print(stdout)
             stdout = self.replace_all(stdout)
             self.ui.log.setHtml(stdout)
