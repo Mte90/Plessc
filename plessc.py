@@ -1,11 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import os,sys,subprocess
 
 from ui_MainWindow import Ui_MainWindow
 from settings import SettingDialog
-import sip
 
 class MainWindow ( QMainWindow , Ui_MainWindow):
 
@@ -23,6 +22,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi( self )
         self.setWindowTitle('PLessc - ' + self.version)
+        #connect the function with the signal
         self.ui.inputChoose.clicked.connect(self.openInputDialog)
         self.ui.outputChoose.clicked.connect(self.openOutputDialog)
         self.ui.setMinify.pressed.connect(self.setMinify)
@@ -38,12 +38,13 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.ui.menuSetting.triggered.connect(self.openSetDialog)
         #hide log
         self.ui.log.hide()
+        #check of the save option
         if self.settings.value('input_file') != -1:
-            self.input_less = self.settings.value('input_file').toString()
+            self.input_less = self.settings.value('input_file')
         else:
             self.input_less = '/'
         if self.settings.value('output_file') != -1:
-            self.output_css = self.settings.value('output_file').toString()
+            self.output_css = self.settings.value('output_file')
         else:
             self.output_css = '/'
         self.ui.inputFile.setText(self.input_less)
@@ -64,6 +65,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.save_method = 1
             self.settings.setValue('both_or_standard',True)
             self.ui.setBoth.toggle()
+        #resize the window for hide the space of log
         self.resize(503,213)
         self.show()
 
@@ -99,26 +101,29 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 
     def compileIt(self):
         if self.save_method == 1:
-            name = self.settings.value('output_file').toString()
+            #if both save method
+            name = self.settings.value('output_file')
             name.replace('.css','.min.css')
-            command = str(self.settings.value('less_path').toString() + ' --verbose "' + self.settings.value('input_file').toString() + '" > "' + self.settings.value('output_file').toString() + '"')
-            os.system(str(self.settings.value('less_path').toString() + ' ' + self.minify_option + '"' + self.settings.value('input_file').toString() + '" > "' + name + '"' ))
+            command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"')
+            os.system(str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + name + '"' ))
             stdout = os.popen4(command)[1].read()
-            print stdout
+            print(stdout)
             stdout = self.replace_all(stdout)
             self.ui.log.setHtml(stdout)
-            self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file').toString()))
+            self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')))
         else:
-            command = str(self.settings.value('less_path').toString() + ' ' + self.minify_option + '"' + self.settings.value('input_file').toString() + '" > "' + self.settings.value('output_file').toString() + '"' )
+            #if standard
+            command = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"' )
             stdout = os.popen4(command)[1].read()
-            print stdout
+            print(stdout)
             stdout = self.replace_all(stdout)
             self.ui.log.setHtml(stdout)
-            self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file').toString()) + '</b>')
-        print command
+            self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>')
+        print(command)
 
     def openEditor(self):
-        open_file = self.settings.value('input_file').toString()
+        open_file = self.settings.value('input_file')
+        #get all file less and open on the editor if this option are set
         if self.settings.value('less_folder').toBool() == True:
             list_file = ''
             path_less = os.path.split(str(open_file))[0]
@@ -126,9 +131,10 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
                 files.sort()
                 for name in files:
                     filename = os.path.join(root, name)
-                    list_file = list_file + '"' + filename + '" '
+                    if filename.endswith('.less'):
+                        list_file = list_file + '"' + filename + '" '
             open_file = list_file
-        os.system(str(self.settings.value('editor_path').toString() + ' ' + open_file))
+        os.system(str(self.settings.value('editor_path') + ' ' + open_file))
 
     def openLog(self):
         if self.ui.log.isVisible() == True:
@@ -157,6 +163,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             num /= 1024.0
 
     def replace_all(self,text):
+        #remove the shellcode for color the text
         text = text.replace('[39m', '<br>').replace('[31m', '').replace('[22m', '').replace('[0m', '')
         text = text.replace('[90m', '').replace('[27m', '').replace('[7m', '').replace('[1m', '')
         if text == '':

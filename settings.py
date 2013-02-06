@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import sys, os
@@ -32,8 +32,8 @@ class SettingDialog ( QDialog , Ui_Settings):
         else:
             self.ui.lessFolder.setChecked(True)
 
-        self.ui.editor.setText(self.settings.value('editor_path').toString())
-        self.ui.lesscPath.setText(self.settings.value('less_path').toString())
+        self.ui.editor.setText(self.settings.value('editor_path'))
+        self.ui.lesscPath.setText(self.settings.value('less_path'))
 
     def openLesscDialog(self):
         lessc = QFileDialog.getOpenFileName(self, 'Choose less compiler',self.ui.lesscPath.text())
