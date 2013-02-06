@@ -86,15 +86,15 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         if self.save_method == 1:
             name = self.settings.value('output_file').toString()
             name.replace('.css','.min.css')
-            command = str('/usr/bin/lessc --verbose "' + self.settings.value('input_file').toString() + '" > "' + self.settings.value('output_file').toString() + '"')
-            os.system(str('/usr/bin/lessc ' + self.minify_option + '"' + self.settings.value('input_file').toString() + '" > "' + name + '"' ))
+            command = str(self.settings.value('less_path').toString() + ' --verbose "' + self.settings.value('input_file').toString() + '" > "' + self.settings.value('output_file').toString() + '"')
+            os.system(str(self.settings.value('less_path').toString() + ' ' + self.minify_option + '"' + self.settings.value('input_file').toString() + '" > "' + name + '"' ))
             stdout = os.popen4(command)[1].read()
             print stdout
             stdout = self.replace_all(stdout)
             self.ui.log.setHtml(stdout)
             self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file').toString()))
         else:
-            command = str('/usr/bin/lessc ' + self.minify_option + '"' + self.settings.value('input_file').toString() + '" > "' + self.settings.value('output_file').toString() + '"' )
+            command = str(self.settings.value('less_path').toString() + ' ' + self.minify_option + '"' + self.settings.value('input_file').toString() + '" > "' + self.settings.value('output_file').toString() + '"' )
             stdout = os.popen4(command)[1].read()
             print stdout
             stdout = self.replace_all(stdout)
@@ -103,7 +103,9 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         print command
 
     def openEditor(self):
-        os.system('/usr/bin/kate ' + str(self.settings.value('input_file').toString()))
+        open_file = self.settings.value('input_file').toString()
+
+        os.system(str(self.settings.value('editor_path').toString() + ' ' + open_file))
 
     def openLog(self):
         if self.ui.log.isVisible() == True:
