@@ -49,15 +49,15 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.output_css = '/'
         self.ui.inputFile.setText(self.input_less)
         self.ui.outputFile.setText(self.output_css)
-        if self.settings.contains('min_or_yui') == False or self.settings.value('min_or_yui').toBool() == False:
-            minify_option = '--yui-compress ';
+        if self.settings.value('min_or_yui') == 'false':
+            self.minify_option = '--yui-compress ';
             self.settings.setValue('min_or_yui',False)
             self.ui.setYUI.toggle()
         else:
             self.minify_option = '-x '
             self.settings.setValue('min_or_yui',True)
             self.ui.setMinify.toggle()
-        if self.settings.contains('both_or_standard') == False or self.settings.value('both_or_standard').toBool() == False:
+        if self.settings.value('both_or_standard') == 'false':
             self.save_method = 0
             self.settings.setValue('both_or_standard',False)
             self.ui.setStandard.toggle()
@@ -101,20 +101,21 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 
     def compileIt(self):
         if self.save_method == 1:
-            #if both save method
+            #if both save method True
             name = self.settings.value('output_file')
             name.replace('.css','.min.css')
             command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"')
             os.system(str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + name + '"' ))
-            stdout = os.popen4(command)[1].read()
+            stdout = os.popen(command)[1].read()
+
             print(stdout)
             stdout = self.replace_all(stdout)
             self.ui.log.setHtml(stdout)
             self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')))
         else:
-            #if standard
+            #if standard = 0 False
             command = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"' )
-            stdout = os.popen4(command)[1].read()
+            stdout = subprocess.Popen(command, stdout=subprocess.PIPE).stdout.read()
             print(stdout)
             stdout = self.replace_all(stdout)
             self.ui.log.setHtml(stdout)
@@ -138,10 +139,10 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 
     def openLog(self):
         if self.ui.log.isVisible() == True:
-            self.resize(self.mysize.width(),213)
+            self.resize(503,213)
             self.ui.log.hide()
         else:
-            self.resize(self.mysize.width(),389)
+            self.resize(503,389)
             self.ui.log.show()
 
     def openSetDialog(self):
