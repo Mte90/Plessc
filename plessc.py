@@ -32,6 +32,8 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.ui.inputEdit.pressed.connect(self.openEditor)
         self.ui.outputLog.clicked.connect(self.openLog)
         self.ui.compile.clicked.connect(self.compileIt)
+        self.ui.inputFile.textChanged.connect(self.setInputFile)
+        self.ui.outputFile.textChanged.connect(self.setOutputFile)
         self.ui.menuInfo.triggered.connect(self.openInfo)
         self.ui.menuSetting.triggered.connect(self.openSetDialog)
         #hide log
@@ -68,12 +70,16 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     def openInputDialog(self):
         self.input_less = QFileDialog.getOpenFileName(self, 'Choose less file',self.ui.inputFile.text(),'LESS file (*.less)')
         self.ui.inputFile.setText(self.input_less)
-        self.settings.setValue('input_file',self.input_less)
 
     def openOutputDialog(self):
         self.output_css = QFileDialog.getSaveFileName(self, 'Set css file',self.ui.outputFile.text(),'CSS file (*.css)')
         self.ui.outputFile.setText(self.output_css)
-        self.settings.setValue('output_file',self.output_css)
+
+    def setInputFile(self):
+        self.settings.setValue('input_file',self.ui.inputFile.text())
+
+    def setOutputFile(self):
+        self.settings.setValue('output_file',self.ui.outputFile.text())
 
     def setMinify(self):
         self.minify_option = '-x '
