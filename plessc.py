@@ -4,6 +4,7 @@ from PyQt4.QtGui import *
 import os,sys,subprocess
 
 from ui_MainWindow import Ui_MainWindow
+from settings import SettingDialog
 
 class MainWindow ( QMainWindow , Ui_MainWindow):
 
@@ -31,6 +32,8 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.ui.inputEdit.pressed.connect(self.openEditor)
         self.ui.compile.clicked.connect(self.compileIt)
         self.ui.outputLog.clicked.connect(self.openLog)
+        self.ui.menuInfo.triggered.connect(self.openInfo)
+        self.ui.menuSetting.triggered.connect(self.openSetDialog)
         #hide log
         self.ui.log.hide()
         if self.settings.value('input_file') != -1:
@@ -89,7 +92,6 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             print stdout
             stdout = self.replace_all(stdout)
             self.ui.log.setHtml(stdout)
-
             self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file').toString()))
         else:
             command = str('/usr/bin/lessc ' + self.minify_option + '"' + self.settings.value('input_file').toString() + '" > "' + self.settings.value('output_file').toString() + '"' )
@@ -111,6 +113,16 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.resize(self.mysize.width(),389)
             self.ui.log.show()
 
+    def openSetDialog(self):
+        #i need to explain this??
+        window = QDialog()
+        ui = SettingDialog()
+        ui.setupUi(window)
+        ui.exec_()
+
+    def openInfo(self):
+        QMessageBox.about(self.window(), "About Plessc","Plessc " + self.version + " <br><br>Software made by <a href='http://www.mte90.net'><b>Mte90</b></a><br><br><a href='https://github.com/Mte90/Plessc'>Official Site</a>")
+
     #http://stackoverflow.com/questions/1094841/reusable-library-to-get-human-readable-version-of-file-size
     def sizeof_fmt(self,file_):
         num = os.path.getsize(str(file_))
@@ -124,7 +136,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         text = text.replace('[90m', '').replace('[27m', '').replace('[7m', '').replace('[1m', '')
         if text == '':
             text = 'OK!'
-        return text
+        return text.lstrip()
 
 def main():
     app = QApplication(sys.argv)
