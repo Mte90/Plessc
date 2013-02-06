@@ -54,6 +54,14 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.minify_option = '-x '
             self.settings.setValue('min_or_yui',True)
             self.ui.setMinify.toggle()
+        if self.settings.contains('both_or_standard') == False or self.settings.value('both_or_standard').toBool() == False:
+            self.save_method = 0
+            self.settings.setValue('both_or_standard',False)
+            self.ui.setStandard.toggle()
+        else:
+            self.save_method = 1
+            self.settings.setValue('both_or_standard',True)
+            self.ui.setBoth.toggle()
         self.resize(503,213)
         self.show()
 
@@ -77,9 +85,11 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 
     def setBoth(self):
         self.save_method = 1
+        self.settings.setValue('both_or_standard',True)
 
     def setStandard(self):
         self.save_method = 0
+        self.settings.setValue('both_or_standard',False)
 
     def compileIt(self):
         if self.save_method == 1:
