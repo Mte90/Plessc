@@ -9,9 +9,9 @@ from settings import SettingDialog
 class MainWindow ( QMainWindow , Ui_MainWindow):
 
     #var initialization
-    settings = QSettings()
+    settings = QSettings('Mte90','Plessc')
     settings.setFallbacksEnabled(False)
-    version = 'V 1.0 Alpha'
+    version = 'V 1.0 Beta'
     input_less = ''
     output_css = ''
     minify_option = '--yui-compress ';

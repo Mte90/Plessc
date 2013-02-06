@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>Settings</class>
+ <widget class="QDialog" name="Settings">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -36,7 +36,7 @@
          <widget class="QLineEdit" name="lesscPath"/>
         </item>
         <item row="0" column="1">
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="chooseLessc">
           <property name="text">
            <string>Choose</string>
           </property>
@@ -48,7 +48,7 @@
      <item row="1" column="0">
       <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
-        <string>GroupBox</string>
+        <string>Editor config</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
@@ -62,7 +62,7 @@
          <widget class="QLineEdit" name="editor"/>
         </item>
         <item row="0" column="2">
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="chooseEditor">
           <property name="text">
            <string>Choose</string>
           </property>
@@ -87,7 +87,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>Settings</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -103,7 +103,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>Settings</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
