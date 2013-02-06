@@ -14,3 +14,7 @@ This software require:
 * Can be opened all less file on the folder of the file choosen 
 * Support minify and yui-compress of lessc
 * Save a development version and a minimized (using the option)
+
+#Run
+
+Execute: pless.py
