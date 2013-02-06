@@ -5,6 +5,7 @@ import os,sys,subprocess
 
 from ui_MainWindow import Ui_MainWindow
 from settings import SettingDialog
+import sip
 
 class MainWindow ( QMainWindow , Ui_MainWindow):
 
@@ -14,7 +15,6 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     version = 'V 1.0 Beta'
     input_less = ''
     output_css = ''
-    minify_option = '--yui-compress ';
     save_method = 0
     mysize = ''
 
@@ -30,8 +30,8 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.ui.setBoth.pressed.connect(self.setBoth)
         self.ui.setStandard.pressed.connect(self.setStandard)
         self.ui.inputEdit.pressed.connect(self.openEditor)
-        self.ui.compile.clicked.connect(self.compileIt)
         self.ui.outputLog.clicked.connect(self.openLog)
+        self.ui.compile.clicked.connect(self.compileIt)
         self.ui.menuInfo.triggered.connect(self.openInfo)
         self.ui.menuSetting.triggered.connect(self.openSetDialog)
         #hide log
@@ -46,18 +46,15 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.output_css = '/'
         self.ui.inputFile.setText(self.input_less)
         self.ui.outputFile.setText(self.output_css)
-        #center the window on the screen
-        #http://www.eurion.net/python-snippets/snippet/Center%20window.html
-        screen = QDesktopWidget().screenGeometry()
-        # ... and get this windows' dimensions
-        self.mysize = self.geometry()
-        # The horizontal position is calulated as screenwidth - windowwidth /2
-        hpos = ( screen.width() - self.mysize.width() ) / 2
-        # And vertical position the same, but with the height dimensions
-        vpos = ( screen.height() - self.mysize.height() - self.mysize.height() ) / 2
-        # And the move call repositions the window
-        self.move(hpos, vpos)
-        self.resize(self.mysize.width(),213)
+        if self.settings.contains('min_or_yui') == False or self.settings.value('min_or_yui').toBool() == False:
+            minify_option = '--yui-compress ';
+            self.settings.setValue('min_or_yui',False)
+            self.ui.setYUI.toggle()
+        else:
+            self.minify_option = '-x '
+            self.settings.setValue('min_or_yui',True)
+            self.ui.setMinify.toggle()
+        self.resize(503,213)
         self.show()
 
     def openInputDialog(self):
@@ -72,9 +69,11 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 
     def setMinify(self):
         self.minify_option = '-x '
+        self.settings.setValue('min_or_yui',True)
 
     def setYUICompress(self):
         self.minify_option = '--yui-compress '
+        self.settings.setValue('min_or_yui',False)
 
     def setBoth(self):
         self.save_method = 1
@@ -104,7 +103,6 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 
     def openEditor(self):
         open_file = self.settings.value('input_file').toString()
-
         os.system(str(self.settings.value('editor_path').toString() + ' ' + open_file))
 
     def openLog(self):
