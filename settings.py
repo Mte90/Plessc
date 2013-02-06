@@ -3,9 +3,9 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import sys, os
 
-from ui_settings import Ui_Dialog
+from ui_settings import Ui_Settings
 
-class SettingDialog ( QDialog , Ui_Dialog):
+class SettingDialog ( QDialog , Ui_Settings):
 
     #var initialization
     settings = QSettings('Mte90','Plessc')
@@ -13,10 +13,11 @@ class SettingDialog ( QDialog , Ui_Dialog):
 
     def __init__ ( self, parent = None ):
         QDialog.__init__( self, parent )
-        self.ui = Ui_Dialog()
+        self.ui = Ui_Settings()
         self.ui.setupUi( self )
         self.ui.chooseLessc.clicked.connect(self.openLesscDialog)
         self.ui.chooseEditor.clicked.connect(self.openEditorDialog)
+        self.ui.buttonBox.accepted.connect(self.saveSetting)
         #lessc path
         if self.settings.contains('lessc_path') == False:
             self.settings.setValue('less_path','/usr/bin/lessc')
@@ -38,11 +39,14 @@ class SettingDialog ( QDialog , Ui_Dialog):
         lessc = QFileDialog.getOpenFileName(self, 'Choose less compiler',self.ui.lesscPath.text())
         self.ui.lesscPath.setText(self.lessc)
 
-
     def openEditorDialog(self):
         editor = QFileDialog.getSaveFileName(self, 'Set editor',self.ui.editor.text())
         self.ui.editor.setText(editor)
 
-
-#        self.settings.setValue('output_file',editor)
-#self.settings.setValue('input_file',lessc)
+    def saveSetting(self):
+        self.settings.setValue('output_file',self.ui.editor.text())
+        self.settings.setValue('input_file',self.ui.lesscPath.text())
+        if self.ui.lessFolder.isChecked() == False:
+            self.settings.setValue('less_folder','False')
+        else:
+            self.settings.setValue('less_folder','True')
