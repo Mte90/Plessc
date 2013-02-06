@@ -47,6 +47,6 @@ class SettingDialog ( QDialog , Ui_Settings):
         self.settings.setValue('output_file',self.ui.editor.text())
         self.settings.setValue('input_file',self.ui.lesscPath.text())
         if self.ui.lessFolder.isChecked() == False:
-            self.settings.setValue('less_folder','False')
+            self.settings.setValue('less_folder',False)
         else:
-            self.settings.setValue('less_folder','True')
+            self.settings.setValue('less_folder',True)

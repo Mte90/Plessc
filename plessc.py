@@ -113,6 +113,15 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 
     def openEditor(self):
         open_file = self.settings.value('input_file').toString()
+        if self.settings.value('less_folder').toBool() == True:
+            list_file = ''
+            path_less = os.path.split(str(open_file))[0]
+            for root, dirs, files in os.walk(path_less):
+                files.sort()
+                for name in files:
+                    filename = os.path.join(root, name)
+                    list_file = list_file + '"' + filename + '" '
+            open_file = list_file
         os.system(str(self.settings.value('editor_path').toString() + ' ' + open_file))
 
     def openLog(self):
