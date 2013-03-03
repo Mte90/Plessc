@@ -15,7 +15,6 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     version = 'V 1.0 Beta'
     input_less = ''
     output_css = ''
-    save_method = 0
     mysize = ''
 
     def __init__ ( self, parent = None ):
@@ -60,11 +59,9 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.settings.setValue('min_or_yui',True)
             self.ui.setMinify.toggle()
         if self.settings.value('both_or_standard') == False:
-            self.save_method = 0
             self.settings.setValue('both_or_standard',False)
             self.ui.setStandard.toggle()
         else:
-            self.save_method = 1
             self.settings.setValue('both_or_standard',True)
             self.ui.setBoth.toggle()
         #resize the window for hide the space of log
@@ -94,11 +91,9 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.settings.setValue('min_or_yui',False)
 
     def setBoth(self):
-        self.save_method = 1
         self.settings.setValue('both_or_standard',True)
 
     def setStandard(self):
-        self.save_method = 0
         self.settings.setValue('both_or_standard',False)
 
     def compileIt(self):
