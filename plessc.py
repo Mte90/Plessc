@@ -101,11 +101,13 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             #if both save method True
             name = self.settings.value('output_file')
             name.replace('.css','.min.css')
+            complete = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + name + '"' )
             command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"')
-            os.system(str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + name + '"' ))
+            os.system(complete)
             stdout = Popen(command, shell=True, stdout=PIPE).stdout
             stdout = str(stdout.read()).replace("b''",'')
             print(stdout)
+            print(complete)
             stdout = self.replace_all(stdout)
             self.ui.log.setHtml(stdout)
             self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')))
