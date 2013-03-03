@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import os,sys
+import os,sys,signal
 from subprocess import Popen, PIPE
 
 from ui_MainWindow import Ui_MainWindow
@@ -37,6 +37,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.ui.outputFile.textChanged.connect(self.setOutputFile)
         self.ui.menuInfo.triggered.connect(self.openInfo)
         self.ui.menuSetting.triggered.connect(self.openSetDialog)
+        signal.signal(signal.SIGINT, signal.SIG_DFL)
         #hide log
         self.ui.log.hide()
         #check of the save option
@@ -50,7 +51,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.output_css = '/'
         self.ui.inputFile.setText(self.input_less)
         self.ui.outputFile.setText(self.output_css)
-        if self.settings.value('min_or_yui') == 'false':
+        if self.settings.value('min_or_yui') == False:
             self.minify_option = '--yui-compress ';
             self.settings.setValue('min_or_yui',False)
             self.ui.setYUI.toggle()
@@ -58,7 +59,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.minify_option = '-x '
             self.settings.setValue('min_or_yui',True)
             self.ui.setMinify.toggle()
-        if self.settings.value('both_or_standard') == 'false':
+        if self.settings.value('both_or_standard') == False:
             self.save_method = 0
             self.settings.setValue('both_or_standard',False)
             self.ui.setStandard.toggle()
@@ -101,7 +102,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.settings.setValue('both_or_standard',False)
 
     def compileIt(self):
-        if self.save_method == 1:
+        if self.settings.value('both_or_standard') == True:
             #if both save method True
             name = self.settings.value('output_file')
             name.replace('.css','.min.css')
