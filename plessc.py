@@ -99,8 +99,8 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     def compileIt(self):
         if self.settings.value('both_or_standard') == True:
             #if both save method True
-            name = self.settings.value('output_file')
-            name.replace('.css','.min.css')
+            name = os.path.splitext(self.settings.value('output_file'))[0]
+            name += '.min.css'
             complete = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + name + '"' )
             command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"')
             os.system(complete)
