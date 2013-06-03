@@ -50,19 +50,19 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.output_css = '/'
         self.ui.inputFile.setText(self.input_less)
         self.ui.outputFile.setText(self.output_css)
-        if self.settings.value('min_or_yui') == False:
+        if self.settings.value('min_or_yui') == 'False':
             self.minify_option = '--yui-compress ';
-            self.settings.setValue('min_or_yui',False)
+            self.settings.setValue('min_or_yui','False')
             self.ui.setYUI.toggle()
         else:
             self.minify_option = '-x '
-            self.settings.setValue('min_or_yui',True)
+            self.settings.setValue('min_or_yui','True')
             self.ui.setMinify.toggle()
-        if self.settings.value('both_or_standard') == False:
-            self.settings.setValue('both_or_standard',False)
+        if self.settings.value('both_or_standard') == 'False':
+            self.settings.setValue('both_or_standard','False')
             self.ui.setStandard.toggle()
         else:
-            self.settings.setValue('both_or_standard',True)
+            self.settings.setValue('both_or_standard','True')
             self.ui.setBoth.toggle()
         #resize the window for hide the space of log
         self.resize(503,213)
@@ -84,20 +84,20 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 
     def setMinify(self):
         self.minify_option = '-x '
-        self.settings.setValue('min_or_yui',True)
+        self.settings.setValue('min_or_yui','True')
 
     def setYUICompress(self):
         self.minify_option = '--yui-compress '
-        self.settings.setValue('min_or_yui',False)
+        self.settings.setValue('min_or_yui','False')
 
     def setBoth(self):
-        self.settings.setValue('both_or_standard',True)
+        self.settings.setValue('both_or_standard','True')
 
     def setStandard(self):
-        self.settings.setValue('both_or_standard',False)
+        self.settings.setValue('both_or_standard','False')
 
     def compileIt(self):
-        if self.settings.value('both_or_standard') == True:
+        if self.settings.value('both_or_standard') == 'True':
             #if both save method True
             name = os.path.splitext(self.settings.value('output_file'))[0]
             name += '.min.css'
@@ -125,7 +125,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     def openEditor(self):
         open_file = self.settings.value('input_file')
         #get all file less and open on the editor if this option are set
-        if self.settings.value('less_folder').toBool() == True:
+        if self.settings.value('less_folder') == 'True':
             list_file = ''
             path_less = os.path.split(str(open_file))[0]
             for root, dirs, files in os.walk(path_less):

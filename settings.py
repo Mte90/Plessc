@@ -19,15 +19,15 @@ class SettingDialog ( QDialog , Ui_Settings):
         self.ui.chooseEditor.clicked.connect(self.openEditorDialog)
         self.ui.buttonBox.accepted.connect(self.saveSetting)
         #lessc path
-        if self.settings.contains('lessc_path') == False:
+        if self.settings.contains('lessc_path') == 'False':
             self.settings.setValue('less_path','/usr/bin/lessc')
         #editor path
-        if self.settings.contains('editor_path') == False:
+        if self.settings.contains('editor_path') == 'False':
             self.settings.setValue('editor_path','/usr/bin/kate')
         #checkbox for open all file in less file folder
-        if self.settings.contains('less_folder') == False:
+        if self.settings.contains('less_folder') == 'False':
             self.settings.setValue('less_folder','False')
-        if self.settings.value('less_folder') == False:
+        if self.settings.value('less_folder') == 'False':
             self.ui.lessFolder.setChecked(False)
         else:
             self.ui.lessFolder.setChecked(True)
@@ -47,6 +47,6 @@ class SettingDialog ( QDialog , Ui_Settings):
         self.settings.setValue('output_file',self.ui.editor.text())
         self.settings.setValue('input_file',self.ui.lesscPath.text())
         if self.ui.lessFolder.isChecked() == False:
-            self.settings.setValue('less_folder',False)
+            self.settings.setValue('less_folder','False')
         else:
-            self.settings.setValue('less_folder',True)
+            self.settings.setValue('less_folder','True')
