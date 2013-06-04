@@ -70,11 +70,13 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 
     def openInputDialog(self):
         self.input_less = QFileDialog.getOpenFileName(self, 'Choose less file',self.ui.inputFile.text(),'LESS file (*.less)')
-        self.ui.inputFile.setText(self.input_less)
+        if self.input_less != '':
+             self.ui.inputFile.setText(self.input_less)
 
     def openOutputDialog(self):
         self.output_css = QFileDialog.getSaveFileName(self, 'Set css file',self.ui.outputFile.text(),'CSS file (*.css)')
-        self.ui.outputFile.setText(self.output_css)
+        if self.output_css != '':
+             self.ui.outputFile.setText(self.output_css)
 
     def setInputFile(self):
         self.settings.setValue('input_file',self.ui.inputFile.text())
