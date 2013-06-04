@@ -103,12 +103,12 @@ class Ui_MainWindow(object):
         self.menuInfo = QtGui.QMenu(self.menubar)
         self.menuInfo.setObjectName(_fromUtf8("menuInfo"))
         MainWindow.setMenuBar(self.menubar)
-        self.actionAbout_Kless = QtGui.QAction(MainWindow)
-        self.actionAbout_Kless.setObjectName(_fromUtf8("actionAbout_Kless"))
+        self.actionAbout_Plessc = QtGui.QAction(MainWindow)
+        self.actionAbout_Plessc.setObjectName(_fromUtf8("actionAbout_Plessc"))
         self.actionSettings = QtGui.QAction(MainWindow)
         self.actionSettings.setObjectName(_fromUtf8("actionSettings"))
         self.menuSetting.addAction(self.actionSettings)
-        self.menuInfo.addAction(self.actionAbout_Kless)
+        self.menuInfo.addAction(self.actionAbout_Plessc)
         self.menubar.addAction(self.menuSetting.menuAction())
         self.menubar.addAction(self.menuInfo.menuAction())
 
@@ -132,7 +132,7 @@ class Ui_MainWindow(object):
         self.outputLog.setText(QtGui.QApplication.translate("MainWindow", "Open Log", None, QtGui.QApplication.UnicodeUTF8))
         self.menuSetting.setTitle(QtGui.QApplication.translate("MainWindow", "Setting", None, QtGui.QApplication.UnicodeUTF8))
         self.menuInfo.setTitle(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAbout_Kless.setText(QtGui.QApplication.translate("MainWindow", "About Kless", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAbout_Plessc.setText(QtGui.QApplication.translate("MainWindow", "About Plessc", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSettings.setText(QtGui.QApplication.translate("MainWindow", "Settings", None, QtGui.QApplication.UnicodeUTF8))
 
 from PyQt4 import QtWebKit

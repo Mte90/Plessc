@@ -181,14 +181,14 @@
     <property name="title">
      <string>Info</string>
     </property>
-    <addaction name="actionAbout_Kless"/>
+    <addaction name="actionAbout_Plessc"/>
    </widget>
    <addaction name="menuSetting"/>
    <addaction name="menuInfo"/>
   </widget>
-  <action name="actionAbout_Kless">
+  <action name="actionAbout_Plessc">
    <property name="text">
-    <string>About Kless</string>
+    <string>About Plessc</string>
    </property>
   </action>
   <action name="actionSettings">
