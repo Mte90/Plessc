@@ -97,29 +97,36 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.settings.setValue('both_or_standard','False')
 
     def compileIt(self):
-        if self.settings.value('both_or_standard') == 'True':
-            #if both save method True
-            name = os.path.splitext(self.settings.value('output_file'))[0]
-            name += '.min.css'
-            complete = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + name + '"' )
-            command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"')
-            os.system(complete)
-            stdout = Popen(command, shell=True, stdout=PIPE).stdout
-            stdout = str(stdout.read()).replace("b''",'')
-            print(stdout)
-            print(complete)
-            stdout = self.replace_all(stdout)
-            self.ui.log.setHtml(stdout)
-            self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')))
+        if os.path.isfile(self.settings.value('input_file')):
+            if self.settings.value('both_or_standard') == 'True':
+                #if both save method True
+                name = os.path.splitext(self.settings.value('output_file'))[0]
+                self.ui.info.setText('Compiling...')
+                name += '.min.css'
+                complete = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + name + '"' )
+                command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"')
+                os.system(complete)
+                stdout = Popen(command, shell=True, stdout=PIPE).stdout
+                stdout = str(stdout.read()).replace("b''",'')
+                print(stdout)
+                print(complete)
+                stdout = self.replace_all(stdout)
+                self.ui.log.setHtml(stdout)
+                self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')))
+            else:
+                #if standard = 0 False
+                self.ui.info.setText('Compiling...')
+                command = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"' )
+                stdout = Popen(command, shell=True, stdout=PIPE).stdout
+                stdout = str(stdout.read()).replace("b''",'')
+                print(stdout)
+                stdout = self.replace_all(stdout)
+                self.ui.log.setHtml(stdout)
+                self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>')
         else:
-            #if standard = 0 False
-            command = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"' )
-            stdout = Popen(command, shell=True, stdout=PIPE).stdout
-            stdout = str(stdout.read()).replace("b''",'')
-            print(stdout)
-            stdout = self.replace_all(stdout)
-            self.ui.log.setHtml(stdout)
-            self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>')
+            QMessageBox.critical(self.window(), "File input not exist","The file input choosen not exist!")
+        if os.path.getsize(self.settings.value('output_file')) == 0:
+            QMessageBox.critical(self.window(), "File empty","The file generated is empty!")
         print(command)
 
     def openEditor(self):
