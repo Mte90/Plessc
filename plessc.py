@@ -110,6 +110,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	def autoCompile(self):
 		if self.ui.autoCompile.isChecked() == False:
 			self.settings.setValue('auto_compile','False')
+			self.watcher.fileChanged.disconnect()
 		else:
 			self.settings.setValue('auto_compile','True')
 			self.watcher.fileChanged.connect(self.compileIt)
