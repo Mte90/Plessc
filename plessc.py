@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import os,sys,signal
+import os, sys, signal, datetime
 from subprocess import Popen, PIPE
 
 from ui_MainWindow import Ui_MainWindow
@@ -70,6 +70,9 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		else:
 			self.ui.autoCompile.setChecked(True)
 		self.ui.autoCompile.stateChanged.connect(self.autoCompile)
+		self.watcher = QFileSystemWatcher()
+		self.watcher.addPath(self.settings.value('input_file'))
+		self.autoCompile()
 		#resize the window for hide the space of log
 		self.resize(503,213)
 		self.show()
@@ -109,6 +112,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 			self.settings.setValue('auto_compile','False')
 		else:
 			self.settings.setValue('auto_compile','True')
+			self.watcher.fileChanged.connect(self.compileIt)
 
 	def compileIt(self):
 		if os.path.isfile(self.settings.value('input_file')):
@@ -126,7 +130,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 				print(complete)
 				stdout = self.replace_all(stdout)
 				self.ui.log.setHtml(stdout)
-				self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')))
+				self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')) + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
 			else:
 				#if standard = 0 False
 				self.ui.info.setText('Compiling...')
@@ -136,7 +140,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 				print(stdout)
 				stdout = self.replace_all(stdout)
 				self.ui.log.setHtml(stdout)
-				self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>')
+				self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>' + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
 		else:
 			QMessageBox.critical(self.window(), "File input not exist","The file input choosen not exist!")
 		if os.path.getsize(self.settings.value('output_file')) == 0:
