@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file '/home/mte90/Desktop/Prog/Plessc/MainWindow.ui'
 #
-# Created: Wed Feb  6 16:49:22 2013
-#      by: PyQt4 UI code generator 4.9.3
+# Created: Wed Jul 17 19:00:11 2013
+#      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -22,44 +31,6 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        self.verticalGroupBox = QtGui.QGroupBox(self.centralwidget)
-        self.verticalGroupBox.setObjectName(_fromUtf8("verticalGroupBox"))
-        self.verticalLayout = QtGui.QVBoxLayout(self.verticalGroupBox)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.setMinify = QtGui.QRadioButton(self.verticalGroupBox)
-        self.setMinify.setObjectName(_fromUtf8("setMinify"))
-        self.verticalLayout.addWidget(self.setMinify)
-        self.setYUI = QtGui.QRadioButton(self.verticalGroupBox)
-        self.setYUI.setChecked(True)
-        self.setYUI.setObjectName(_fromUtf8("setYUI"))
-        self.verticalLayout.addWidget(self.setYUI)
-        self.horizontalLayout_2.addWidget(self.verticalGroupBox)
-        self.verticalGroupBox1 = QtGui.QGroupBox(self.centralwidget)
-        self.verticalGroupBox1.setObjectName(_fromUtf8("verticalGroupBox1"))
-        self.verticalLayout_2 = QtGui.QVBoxLayout(self.verticalGroupBox1)
-        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.setStandard = QtGui.QRadioButton(self.verticalGroupBox1)
-        self.setStandard.setChecked(True)
-        self.setStandard.setObjectName(_fromUtf8("setStandard"))
-        self.verticalLayout_2.addWidget(self.setStandard)
-        self.setBoth = QtGui.QRadioButton(self.verticalGroupBox1)
-        self.setBoth.setObjectName(_fromUtf8("setBoth"))
-        self.verticalLayout_2.addWidget(self.setBoth)
-        self.horizontalLayout_2.addWidget(self.verticalGroupBox1)
-        self.gridLayout.addLayout(self.horizontalLayout_2, 3, 0, 1, 1)
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
-        self.info = QtGui.QLabel(self.centralwidget)
-        self.info.setMinimumSize(QtCore.QSize(400, 0))
-        self.info.setText(_fromUtf8(""))
-        self.info.setObjectName(_fromUtf8("info"))
-        self.horizontalLayout.addWidget(self.info)
-        self.compile = QtGui.QPushButton(self.centralwidget)
-        self.compile.setObjectName(_fromUtf8("compile"))
-        self.horizontalLayout.addWidget(self.compile)
-        self.gridLayout.addLayout(self.horizontalLayout, 5, 0, 1, 1)
         self.gridLayout_2 = QtGui.QGridLayout()
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.gridLayout_3 = QtGui.QGridLayout()
@@ -93,7 +64,51 @@ class Ui_MainWindow(object):
         self.log = QtWebKit.QWebView(self.centralwidget)
         self.log.setUrl(QtCore.QUrl(_fromUtf8("about:blank")))
         self.log.setObjectName(_fromUtf8("log"))
-        self.gridLayout.addWidget(self.log, 6, 0, 1, 1)
+        self.gridLayout.addWidget(self.log, 7, 0, 1, 1)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
+        self.info = QtGui.QLabel(self.centralwidget)
+        self.info.setMinimumSize(QtCore.QSize(400, 0))
+        self.info.setText(_fromUtf8(""))
+        self.info.setObjectName(_fromUtf8("info"))
+        self.horizontalLayout.addWidget(self.info)
+        self.compile = QtGui.QPushButton(self.centralwidget)
+        self.compile.setObjectName(_fromUtf8("compile"))
+        self.horizontalLayout.addWidget(self.compile)
+        self.gridLayout.addLayout(self.horizontalLayout, 6, 0, 1, 1)
+        self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.verticalGroupBox = QtGui.QGroupBox(self.centralwidget)
+        self.verticalGroupBox.setObjectName(_fromUtf8("verticalGroupBox"))
+        self.verticalLayout = QtGui.QVBoxLayout(self.verticalGroupBox)
+        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.setMinify = QtGui.QRadioButton(self.verticalGroupBox)
+        self.setMinify.setObjectName(_fromUtf8("setMinify"))
+        self.verticalLayout.addWidget(self.setMinify)
+        self.setYUI = QtGui.QRadioButton(self.verticalGroupBox)
+        self.setYUI.setChecked(True)
+        self.setYUI.setObjectName(_fromUtf8("setYUI"))
+        self.verticalLayout.addWidget(self.setYUI)
+        self.horizontalLayout_2.addWidget(self.verticalGroupBox)
+        self.verticalGroupBox1 = QtGui.QGroupBox(self.centralwidget)
+        self.verticalGroupBox1.setObjectName(_fromUtf8("verticalGroupBox1"))
+        self.verticalLayout_2 = QtGui.QVBoxLayout(self.verticalGroupBox1)
+        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.setStandard = QtGui.QRadioButton(self.verticalGroupBox1)
+        self.setStandard.setChecked(True)
+        self.setStandard.setObjectName(_fromUtf8("setStandard"))
+        self.verticalLayout_2.addWidget(self.setStandard)
+        self.setBoth = QtGui.QRadioButton(self.verticalGroupBox1)
+        self.setBoth.setObjectName(_fromUtf8("setBoth"))
+        self.verticalLayout_2.addWidget(self.setBoth)
+        self.horizontalLayout_2.addWidget(self.verticalGroupBox1)
+        self.gridLayout.addLayout(self.horizontalLayout_2, 3, 0, 1, 1)
+        self.horizontalLayout_3 = QtGui.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
+        self.gridLayout.addLayout(self.horizontalLayout_3, 4, 0, 1, 1)
+        self.autoCompile = QtGui.QCheckBox(self.centralwidget)
+        self.autoCompile.setObjectName(_fromUtf8("autoCompile"))
+        self.gridLayout.addWidget(self.autoCompile, 5, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 503, 22))
@@ -116,23 +131,24 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "MainWindow", None, QtGui.QApplication.UnicodeUTF8))
-        self.verticalGroupBox.setTitle(QtGui.QApplication.translate("MainWindow", "Option ", None, QtGui.QApplication.UnicodeUTF8))
-        self.setMinify.setText(QtGui.QApplication.translate("MainWindow", "Minify", None, QtGui.QApplication.UnicodeUTF8))
-        self.setYUI.setText(QtGui.QApplication.translate("MainWindow", "YUI Compress", None, QtGui.QApplication.UnicodeUTF8))
-        self.verticalGroupBox1.setTitle(QtGui.QApplication.translate("MainWindow", "Save Method", None, QtGui.QApplication.UnicodeUTF8))
-        self.setStandard.setText(QtGui.QApplication.translate("MainWindow", "Only minified version", None, QtGui.QApplication.UnicodeUTF8))
-        self.setBoth.setText(QtGui.QApplication.translate("MainWindow", "Standard and minified version", None, QtGui.QApplication.UnicodeUTF8))
-        self.compile.setText(QtGui.QApplication.translate("MainWindow", "Compile it!", None, QtGui.QApplication.UnicodeUTF8))
-        self.inputChoose.setText(QtGui.QApplication.translate("MainWindow", "Choose", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("MainWindow", "Input File", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("MainWindow", "Output File", None, QtGui.QApplication.UnicodeUTF8))
-        self.outputChoose.setText(QtGui.QApplication.translate("MainWindow", "Choose", None, QtGui.QApplication.UnicodeUTF8))
-        self.inputEdit.setText(QtGui.QApplication.translate("MainWindow", "Edit", None, QtGui.QApplication.UnicodeUTF8))
-        self.outputLog.setText(QtGui.QApplication.translate("MainWindow", "Open Log", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuSetting.setTitle(QtGui.QApplication.translate("MainWindow", "Setting", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuInfo.setTitle(QtGui.QApplication.translate("MainWindow", "Info", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAbout_Plessc.setText(QtGui.QApplication.translate("MainWindow", "About Plessc", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSettings.setText(QtGui.QApplication.translate("MainWindow", "Settings", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow", None))
+        self.inputChoose.setText(_translate("MainWindow", "Choose", None))
+        self.label.setText(_translate("MainWindow", "Input File", None))
+        self.label_2.setText(_translate("MainWindow", "Output File", None))
+        self.outputChoose.setText(_translate("MainWindow", "Choose", None))
+        self.inputEdit.setText(_translate("MainWindow", "Edit", None))
+        self.outputLog.setText(_translate("MainWindow", "Open Log", None))
+        self.compile.setText(_translate("MainWindow", "Compile it!", None))
+        self.verticalGroupBox.setTitle(_translate("MainWindow", "Option ", None))
+        self.setMinify.setText(_translate("MainWindow", "Minify", None))
+        self.setYUI.setText(_translate("MainWindow", "YUI Compress", None))
+        self.verticalGroupBox1.setTitle(_translate("MainWindow", "Save Method", None))
+        self.setStandard.setText(_translate("MainWindow", "Only minified version", None))
+        self.setBoth.setText(_translate("MainWindow", "Standard and minified version", None))
+        self.autoCompile.setText(_translate("MainWindow", "Auto Compile - Auto check if less file are changed and compile", None))
+        self.menuSetting.setTitle(_translate("MainWindow", "Setting", None))
+        self.menuInfo.setTitle(_translate("MainWindow", "Info", None))
+        self.actionAbout_Plessc.setText(_translate("MainWindow", "About Plessc", None))
+        self.actionSettings.setText(_translate("MainWindow", "Settings", None))
 
 from PyQt4 import QtWebKit

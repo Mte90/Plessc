@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file '/home/mte90/Desktop/Prog/Plessc/settings.ui'
 #
-# Created: Wed Feb  6 10:38:30 2013
-#      by: PyQt4 UI code generator 4.9.3
+# Created: Wed Jul 17 19:01:39 2013
+#      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_Settings(object):
     def setupUi(self, Settings):
@@ -63,11 +72,11 @@ class Ui_Settings(object):
         QtCore.QMetaObject.connectSlotsByName(Settings)
 
     def retranslateUi(self, Settings):
-        Settings.setWindowTitle(QtGui.QApplication.translate("Settings", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setTitle(QtGui.QApplication.translate("Settings", "Lessc Path", None, QtGui.QApplication.UnicodeUTF8))
-        self.chooseLessc.setText(QtGui.QApplication.translate("Settings", "Choose", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox_2.setTitle(QtGui.QApplication.translate("Settings", "Editor config", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("Settings", "Editor", None, QtGui.QApplication.UnicodeUTF8))
-        self.chooseEditor.setText(QtGui.QApplication.translate("Settings", "Choose", None, QtGui.QApplication.UnicodeUTF8))
-        self.lessFolder.setText(QtGui.QApplication.translate("Settings", "Open all file less in folder", None, QtGui.QApplication.UnicodeUTF8))
+        Settings.setWindowTitle(_translate("Settings", "Plessc Setting", None))
+        self.groupBox.setTitle(_translate("Settings", "Lessc Path", None))
+        self.chooseLessc.setText(_translate("Settings", "Choose", None))
+        self.groupBox_2.setTitle(_translate("Settings", "Editor config", None))
+        self.label.setText(_translate("Settings", "Editor", None))
+        self.chooseEditor.setText(_translate("Settings", "Choose", None))
+        self.lessFolder.setText(_translate("Settings", "Open all file less in folder", None))
 
