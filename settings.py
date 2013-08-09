@@ -44,8 +44,8 @@ class SettingDialog ( QDialog , Ui_Settings):
         self.ui.editor.setText(editor)
 
     def saveSetting(self):
-        self.settings.setValue('output_file',self.ui.editor.text())
-        self.settings.setValue('input_file',self.ui.lesscPath.text())
+        self.settings.setValue('editor_path',self.ui.editor.text())
+        self.settings.setValue('less_path',self.ui.lesscPath.text())
         if self.ui.lessFolder.isChecked() == False:
             self.settings.setValue('less_folder','False')
         else:
