@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/mte90/Desktop/Prog/Plessc/MainWindow.ui'
 #
-# Created: Wed Jul 17 19:00:11 2013
+# Created: Mon Aug 12 19:23:49 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -145,7 +145,7 @@ class Ui_MainWindow(object):
         self.verticalGroupBox1.setTitle(_translate("MainWindow", "Save Method", None))
         self.setStandard.setText(_translate("MainWindow", "Only minified version", None))
         self.setBoth.setText(_translate("MainWindow", "Standard and minified version", None))
-        self.autoCompile.setText(_translate("MainWindow", "Auto Compile - Auto check if less file are changed and compile", None))
+        self.autoCompile.setText(_translate("MainWindow", "Auto Compile - Check if input less file are updated and compile", None))
         self.menuSetting.setTitle(_translate("MainWindow", "Setting", None))
         self.menuInfo.setTitle(_translate("MainWindow", "Info", None))
         self.actionAbout_Plessc.setText(_translate("MainWindow", "About Plessc", None))

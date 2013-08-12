@@ -71,7 +71,7 @@
         <item row="1" column="1">
          <widget class="QCheckBox" name="lessFolder">
           <property name="text">
-           <string>Open all file less in folder</string>
+           <string>Open all less files in the folder</string>
           </property>
          </widget>
         </item>

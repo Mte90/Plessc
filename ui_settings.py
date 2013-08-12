@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/mte90/Desktop/Prog/Plessc/settings.ui'
 #
-# Created: Wed Jul 17 19:01:39 2013
+# Created: Mon Aug 12 19:21:42 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -78,5 +78,5 @@ class Ui_Settings(object):
         self.groupBox_2.setTitle(_translate("Settings", "Editor config", None))
         self.label.setText(_translate("Settings", "Editor", None))
         self.chooseEditor.setText(_translate("Settings", "Choose", None))
-        self.lessFolder.setText(_translate("Settings", "Open all file less in folder", None))
+        self.lessFolder.setText(_translate("Settings", "Open all less files in the folder", None))
 

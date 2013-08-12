@@ -166,7 +166,7 @@
     <item row="5" column="0">
      <widget class="QCheckBox" name="autoCompile">
       <property name="text">
-       <string>Auto Compile - Auto check if less file are changed and compile</string>
+       <string>Auto Compile - Check if input less file are updated and compile</string>
       </property>
      </widget>
     </item>
