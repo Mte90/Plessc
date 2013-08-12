@@ -2,7 +2,6 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import os, sys, signal, datetime
-from subprocess import Popen, PIPE
 
 from ui_MainWindow import Ui_MainWindow
 from settings import SettingDialog
@@ -16,6 +15,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	input_less = ''
 	output_css = ''
 	mysize = ''
+	proc = QProcess()
 
 	def __init__ ( self, parent = None ):
 		QMainWindow.__init__( self, parent )
@@ -36,6 +36,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		self.ui.outputFile.textChanged.connect(self.setOutputFile)
 		self.ui.menuInfo.triggered.connect(self.openInfo)
 		self.ui.menuSetting.triggered.connect(self.openSetDialog)
+		self.proc.readyReadStandardOutput.connect(self.__read)
 		signal.signal(signal.SIGINT, signal.SIG_DFL)
 		#hide log
 		self.ui.log.hide()
@@ -125,27 +126,21 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 				complete = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + name + '"' )
 				command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"')
 				os.system(complete)
-				stdout = Popen(command, shell=True, stdout=PIPE).stdout
-				stdout = str(stdout.read()).replace("b''",'')
-				print(stdout)
-				print(complete)
-				stdout = self.replace_all(stdout)
-				self.ui.log.setHtml(stdout)
+				self.proc.closeWriteChannel()
+				self.proc.setProcessChannelMode(QProcess.MergedChannels)
+				self.proc.start(command)
+				self.replace_all(stdout)
 				self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')) + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
 			else:
 				#if standard = 0 False
 				self.ui.info.setText('Compiling...')
 				command = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"' )
-				stdout = Popen(command, shell=True, stdout=PIPE).stdout
-				stdout = str(stdout.read()).replace("b''",'')
-				print(stdout)
-				stdout = self.replace_all(stdout)
-				self.ui.log.setHtml(stdout)
+				self.proc.closeWriteChannel()
+				self.proc.setProcessChannelMode(QProcess.MergedChannels)
+				self.proc.start(command)
 				self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>' + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
 		else:
 			QMessageBox.critical(self.window(), "File input not exist","The file input choosen not exist!")
-		if os.path.getsize(self.settings.value('output_file')) == 0:
-			QMessageBox.critical(self.window(), "File empty","The file generated is empty!")
 		print(command)
 
 	def openEditor(self):
@@ -190,12 +185,19 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 			num /= 1024.0
 
 	def replace_all(self,text):
-		#remove the shellcode for color the text
-		text = text.replace('[39m', '<br>').replace('[31m', '').replace('[22m', '').replace('[0m', '')
-		text = text.replace('[90m', '').replace('[27m', '').replace('[7m', '').replace('[1m', '')
-		if text == '':
-			text = 'OK!'
+		#remove the shellcode of the color of the text
+		text = text.replace('[39m', '<br>').replace('[31m', '').replace('[22m', '').replace('[0m', '').replace('1b', '')
+		text = text.replace('[90m', '').replace('[27m', '').replace('[7m', '').replace('[1m', '').replace("b'",'').replace('\n\n','')
+		text = text.replace('\\x', '').replace('\\n\\n\'', '').replace('\\n', '')
+		
+		#if text == '':
+		text = 'OK!'
+		
 		return text.lstrip()
+		
+	def __read(self):
+		stdout = str(self.proc.readAllStandardOutput())
+		self.ui.log.setHtml(self.replace_all(stdout))
 
 def main():
 	app = QApplication(sys.argv)
