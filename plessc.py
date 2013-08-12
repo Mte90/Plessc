@@ -199,6 +199,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		print(check)
 		if(check is not None and len(check) > 3):
 			self.ui.log.setHtml(self.replace_all(stdout))
+			self.openLog()
 		else:
 			self.ui.log.setHtml('OK!')
 
