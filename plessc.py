@@ -36,7 +36,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		self.ui.outputFile.textChanged.connect(self.setOutputFile)
 		self.ui.menuInfo.triggered.connect(self.openInfo)
 		self.ui.menuSetting.triggered.connect(self.openSetDialog)
-		self.proc.readyReadStandardOutput.connect(self.__read)
+		self.proc.finished.connect(self.checkLog)
 		signal.signal(signal.SIGINT, signal.SIG_DFL)
 		#hide log
 		self.ui.log.hide()
@@ -118,6 +118,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 
 	def compileIt(self):
 		if os.path.isfile(self.settings.value('input_file')):
+			self.ui.log.setHtml('')
 			if self.settings.value('both_or_standard') == 'True':
 				#if both save method True
 				name = os.path.splitext(self.settings.value('output_file'))[0]
@@ -187,17 +188,19 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	def replace_all(self,text):
 		#remove the shellcode of the color of the text
 		text = text.replace('[39m', '<br>').replace('[31m', '').replace('[22m', '').replace('[0m', '').replace('1b', '')
-		text = text.replace('[90m', '').replace('[27m', '').replace('[7m', '').replace('[1m', '').replace("b'",'').replace('\n\n','')
+		text = text.replace('[90m', '').replace('[27m', '').replace('[7m', '').replace('[1m', '').replace("b''",'').replace('\n\n','')
 		text = text.replace('\\x', '').replace('\\n\\n\'', '').replace('\\n', '')
-		
-		#if text == '':
-		text = 'OK!'
 		
 		return text.lstrip()
 		
-	def __read(self):
+	def checkLog(self):
 		stdout = str(self.proc.readAllStandardOutput())
-		self.ui.log.setHtml(self.replace_all(stdout))
+		check = stdout.strip()
+		print(check)
+		if(check is not None and len(check) > 3):
+			self.ui.log.setHtml(self.replace_all(stdout))
+		else:
+			self.ui.log.setHtml('OK!')
 
 def main():
 	app = QApplication(sys.argv)
