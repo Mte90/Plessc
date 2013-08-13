@@ -124,20 +124,17 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 				name = os.path.splitext(self.settings.value('output_file'))[0]
 				self.ui.info.setText('Compiling...')
 				name += '.min.css'
-				complete = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + name + '"' )
-				command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"')
+				complete = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" "' + name + '"' )
+				command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"')
 				os.system(complete)
 				self.proc.closeWriteChannel()
-				self.proc.setProcessChannelMode(QProcess.MergedChannels)
 				self.proc.start(command)
-				self.replace_all(stdout)
 				self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')) + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
 			else:
 				#if standard = 0 False
 				self.ui.info.setText('Compiling...')
-				command = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" > "' + self.settings.value('output_file') + '"' )
+				command = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"' )
 				self.proc.closeWriteChannel()
-				self.proc.setProcessChannelMode(QProcess.MergedChannels)
 				self.proc.start(command)
 				self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>' + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
 		else:
@@ -196,7 +193,6 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	def checkLog(self):
 		stdout = str(self.proc.readAllStandardOutput())
 		check = stdout.strip()
-		print(check)
 		if(check is not None and len(check) > 3):
 			self.ui.log.setHtml(self.replace_all(stdout))
 			self.openLog()
