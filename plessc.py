@@ -15,6 +15,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	input_less = ''
 	output_css = ''
 	mysize = ''
+	option = {}
 	proc = QProcess()
 	less_version = QProcess()
 
@@ -30,6 +31,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		self.ui.setYUI.pressed.connect(self.setYUICompress)
 		self.ui.setBoth.pressed.connect(self.setBoth)
 		self.ui.setStandard.pressed.connect(self.setStandard)
+		self.ui.optionIE.stateChanged.connect(self.setOptionIE)
 		self.ui.inputEdit.pressed.connect(self.openEditor)
 		self.ui.outputLog.clicked.connect(self.openLog)
 		self.ui.compile.clicked.connect(self.compileIt)
@@ -57,11 +59,11 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		self.ui.inputFile.setText(self.input_less)
 		self.ui.outputFile.setText(self.output_css)
 		if self.settings.value('min_or_yui') == 'False':
-			self.minify_option = '--yui-compress ';
+			self.option['minify'] = '--yui-compress';
 			self.settings.setValue('min_or_yui','False')
 			self.ui.setYUI.toggle()
 		else:
-			self.minify_option = '-x '
+			self.option['minify'] = '-x'
 			self.settings.setValue('min_or_yui','True')
 			self.ui.setMinify.toggle()
 		if self.settings.value('both_or_standard') == 'False':
@@ -79,6 +81,13 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		self.watcher = QFileSystemWatcher()
 		self.watcher.addPath(self.settings.value('input_file'))
 		self.autoCompile()
+		#Option IE 
+		if self.settings.value('option_IE') == 'False':
+			self.ui.optionIE.setChecked(False)
+			self.option['ie'] = ' '
+		else:
+			self.ui.optionIE.setChecked(True)
+			self.option['ie'] = '--no-ie-compat'
 		#resize the window for hide the space of log
 		self.resize(503,213)
 		self.show()
@@ -100,11 +109,11 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		self.settings.setValue('output_file',self.ui.outputFile.text())
 
 	def setMinify(self):
-		self.minify_option = '-x '
+		self.option['minify'] = '-x'
 		self.settings.setValue('min_or_yui','True')
 
 	def setYUICompress(self):
-		self.minify_option = '--yui-compress '
+		self.option['minify'] = '--yui-compress'
 		self.settings.setValue('min_or_yui','False')
 
 	def setBoth(self):
@@ -116,11 +125,19 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	def autoCompile(self):
 		if self.ui.autoCompile.isChecked() == False:
 			self.settings.setValue('auto_compile','False')
-			self.watcher.fileChanged.disconnect()
+			#self.watcher.fileChanged.disconnect()
 		else:
 			self.settings.setValue('auto_compile','True')
 			self.watcher.fileChanged.connect(self.compileIt)
-
+	
+	def setOptionIE(self):
+		if self.ui.optionIE.isChecked() == False:
+			self.settings.setValue('option_IE','False')
+			self.option['ie'] = ''
+		else:
+			self.settings.setValue('option_IE','True')
+			self.option['ie'] = '--no-ie-compat'
+	
 	def compileIt(self):
 		if os.path.isfile(self.settings.value('input_file')):
 			self.ui.log.setHtml('')
@@ -129,7 +146,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 				name = os.path.splitext(self.settings.value('output_file'))[0]
 				self.ui.info.setText('Compiling...')
 				name += '.min.css'
-				complete = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" "' + name + '"' )
+				complete = str(self.settings.value('less_path') + self.optionString() + '"' + self.settings.value('input_file') + '" "' + name + '"' )
 				command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"')
 				os.system(complete)
 				self.proc.closeWriteChannel()
@@ -138,7 +155,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 			else:
 				#if standard = 0 False
 				self.ui.info.setText('Compiling...')
-				command = str(self.settings.value('less_path') + ' ' + self.minify_option + '"' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"' )
+				command = str(self.settings.value('less_path') + self.optionString() + '"' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"' )
 				self.proc.closeWriteChannel()
 				self.proc.start(command)
 				self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>' + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
@@ -207,6 +224,10 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	def updateTitle(self):
 		stdout = str(self.less_version.readAllStandardOutput())
 		self.setWindowTitle('PLessc - ' + self.replace_all(stdout.rstrip('\'')))
+		
+	def optionString(self):
+		string = ' '.join('{}'.format(val) for key, val in self.option.items())
+		return ' ' + string + ' '
 		
 def main():
 	app = QApplication(sys.argv)
