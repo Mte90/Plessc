@@ -16,12 +16,13 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	output_css = ''
 	mysize = ''
 	proc = QProcess()
+	less_version = QProcess()
 
 	def __init__ ( self, parent = None ):
 		QMainWindow.__init__( self, parent )
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi( self )
-		self.setWindowTitle('PLessc - ' + self.version)
+		self.setWindowTitle('PLessc - lessc not defined')
 		#connect the function with the signal
 		self.ui.inputChoose.clicked.connect(self.openInputDialog)
 		self.ui.outputChoose.clicked.connect(self.openOutputDialog)
@@ -37,9 +38,13 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		self.ui.menuInfo.triggered.connect(self.openInfo)
 		self.ui.menuSetting.triggered.connect(self.openSetDialog)
 		self.proc.finished.connect(self.checkLog)
+		self.less_version.finished.connect(self.updateTitle)
 		signal.signal(signal.SIGINT, signal.SIG_DFL)
 		#hide log
 		self.ui.log.hide()
+		#check lessc version
+		self.less_version.closeWriteChannel()
+		self.less_version.start(self.settings.value('less_path'),['--version'])
 		#check of the save option
 		if self.settings.value('input_file') != -1:
 			self.input_less = self.settings.value('input_file')
@@ -185,7 +190,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	def replace_all(self,text):
 		#remove the shellcode of the color of the text
 		text = text.replace('[39m', '<br>').replace('[31m', '').replace('[22m', '').replace('[0m', '').replace('1b', '')
-		text = text.replace('[90m', '').replace('[27m', '').replace('[7m', '').replace('[1m', '').replace("b''",'').replace('\n\n','')
+		text = text.replace('[90m', '').replace('[27m', '').replace('[7m', '').replace('[1m', '').replace("b''",'').replace('\n\n','').replace('b\'','')
 		text = text.replace('\\x', '').replace('\\n\\n\'', '').replace('\\n', '')
 		
 		return text.lstrip()
@@ -198,7 +203,11 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 			self.openLog()
 		else:
 			self.ui.log.setHtml('OK!')
-
+	
+	def updateTitle(self):
+		stdout = str(self.less_version.readAllStandardOutput())
+		self.setWindowTitle('PLessc - ' + self.replace_all(stdout.rstrip('\'')))
+		
 def main():
 	app = QApplication(sys.argv)
 	MainWindow_ = QMainWindow()
