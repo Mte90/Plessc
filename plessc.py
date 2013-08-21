@@ -151,14 +151,14 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 				os.system(complete)
 				self.proc.closeWriteChannel()
 				self.proc.start(command)
-				self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')) + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
+				self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')) + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
 			else:
 				#if standard = 0 False
 				self.ui.info.setText('Compiling...')
 				command = str(self.settings.value('less_path') + self.optionString() + '"' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"' )
 				self.proc.closeWriteChannel()
 				self.proc.start(command)
-				self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>' + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M"))
+				self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>' + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
 		else:
 			QMessageBox.critical(self.window(), "File input not exist","The file input choosen not exist!")
 		print(command)
