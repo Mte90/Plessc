@@ -129,12 +129,11 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 				self.watcher.fileChanged.disconnect()
 			except (RuntimeError, TypeError, NameError):
 				pass
-			print(2)
 		else:
 			self.settings.setValue('auto_compile','True')
+			self.watcher.removePath(self.settings.value('input_file'))
 			self.watcher.addPath(self.settings.value('input_file'))
 			self.watcher.fileChanged.connect(self.compileIt)
-			print(1)
 	
 	def setOptionIE(self):
 		if self.ui.optionIE.isChecked() == False:
@@ -168,6 +167,9 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		else:
 			QMessageBox.critical(self.window(), "File input not exist","The file input choosen not exist!")
 		print(command)
+		
+		self.watcher.removePath(self.settings.value('input_file'))
+		self.watcher.addPath(self.settings.value('input_file'))
 
 	def openEditor(self):
 		open_file = self.settings.value('input_file')
