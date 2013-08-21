@@ -11,7 +11,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	#var initialization
 	settings = QSettings('Mte90','Plessc')
 	settings.setFallbacksEnabled(False)
-	version = 'V 1.0 Beta'
+	version = 'V 1.0 Beta 2'
 	input_less = ''
 	output_css = ''
 	mysize = ''
@@ -25,7 +25,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi( self )
 		self.setWindowTitle('PLessc - lessc not defined')
-		#connect the function with the signal
+		#Connect the function with the signal
 		self.ui.inputChoose.clicked.connect(self.openInputDialog)
 		self.ui.outputChoose.clicked.connect(self.openOutputDialog)
 		self.ui.setMinify.pressed.connect(self.setMinify)
@@ -48,7 +48,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		#check lessc version
 		self.less_version.closeWriteChannel()
 		self.less_version.start(self.settings.value('less_path'),['--version'])
-		#check of the save option
+		#Check the setting for load the path of the file
 		if self.settings.value('input_file') != -1:
 			self.input_less = self.settings.value('input_file')
 		else:
@@ -59,6 +59,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 			self.output_css = '/'
 		self.ui.inputFile.setText(self.input_less)
 		self.ui.outputFile.setText(self.output_css)
+		#Check the setting for the minify mode for the css file
 		if self.settings.value('min_or_yui') == 'False':
 			self.option['minify'] = '--yui-compress';
 			self.settings.setValue('min_or_yui','False')
@@ -67,6 +68,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 			self.option['minify'] = '-x'
 			self.settings.setValue('min_or_yui','True')
 			self.ui.setMinify.toggle()
+		#Check for the export of the file
 		if self.settings.value('both_or_standard') == 'False':
 			self.settings.setValue('both_or_standard','False')
 			self.ui.setStandard.toggle()
@@ -78,50 +80,60 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 			self.ui.autoCompile.setChecked(False)
 		else:
 			self.ui.autoCompile.setChecked(True)
+		#Add the function for the autocompile after the load of the setting
 		self.ui.autoCompile.stateChanged.connect(self.autoCompile)
-		
 		self.autoCompile()
-		#Option IE 
+		#Setting for export the css for old IE version
 		if self.settings.value('option_IE') == 'False':
 			self.ui.optionIE.setChecked(False)
 			self.option['ie'] = ' '
 		else:
 			self.ui.optionIE.setChecked(True)
 			self.option['ie'] = '--no-ie-compat'
-		#resize the window for hide the space of log
+		#Resize the window for hide the space of log
 		self.resize(503,213)
 		self.show()
-
+	
+	#Function for open a dialog for choose the input less file
 	def openInputDialog(self):
 		self.input_less = QFileDialog.getOpenFileName(self, 'Choose less file',self.ui.inputFile.text(),'LESS file (*.less)')
 		if self.input_less != '':
 			 self.ui.inputFile.setText(self.input_less)
-
+	
+	#Function for open a dialog for choose the output css file
 	def openOutputDialog(self):
 		self.output_css = QFileDialog.getSaveFileName(self, 'Set css file',self.ui.outputFile.text(),'CSS file (*.css)')
 		if self.output_css != '':
 			 self.ui.outputFile.setText(self.output_css)
-
+	
+	#Save the input file in the setting
 	def setInputFile(self):
 		self.settings.setValue('input_file',self.ui.inputFile.text())
-
+	
+	#Save the output file in the setting
 	def setOutputFile(self):
 		self.settings.setValue('output_file',self.ui.outputFile.text())
 
+	#Save the minify setting
 	def setMinify(self):
 		self.option['minify'] = '-x'
 		self.settings.setValue('min_or_yui','True')
-
+	
+	#Save the YUI compress setting
 	def setYUICompress(self):
 		self.option['minify'] = '--yui-compress'
 		self.settings.setValue('min_or_yui','False')
-
+	
+	#Save the output export of the css
 	def setBoth(self):
 		self.settings.setValue('both_or_standard','True')
-
+	
+	#Save the output export of the css
 	def setStandard(self):
 		self.settings.setValue('both_or_standard','False')
 	
+	#Check autoCompile and enable the watching of the input less file and folder
+	#Todo watching of the folder
 	def autoCompile(self):
 		if self.ui.autoCompile.isChecked() == False:
 			self.settings.setValue('auto_compile','False')
