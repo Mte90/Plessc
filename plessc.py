@@ -18,6 +18,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	option = {}
 	proc = QProcess()
 	less_version = QProcess()
+	watcher = QFileSystemWatcher()
 
 	def __init__ ( self, parent = None ):
 		QMainWindow.__init__( self, parent )
@@ -78,8 +79,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		else:
 			self.ui.autoCompile.setChecked(True)
 		self.ui.autoCompile.stateChanged.connect(self.autoCompile)
-		self.watcher = QFileSystemWatcher()
-		self.watcher.addPath(self.settings.value('input_file'))
+		
 		self.autoCompile()
 		#Option IE 
 		if self.settings.value('option_IE') == 'False':
@@ -125,10 +125,16 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	def autoCompile(self):
 		if self.ui.autoCompile.isChecked() == False:
 			self.settings.setValue('auto_compile','False')
-			self.watcher.fileChanged.disconnect()
+			try:
+				self.watcher.fileChanged.disconnect()
+			except (RuntimeError, TypeError, NameError):
+				pass
+			print(2)
 		else:
 			self.settings.setValue('auto_compile','True')
+			self.watcher.addPath(self.settings.value('input_file'))
 			self.watcher.fileChanged.connect(self.compileIt)
+			print(1)
 	
 	def setOptionIE(self):
 		if self.ui.optionIE.isChecked() == False:
