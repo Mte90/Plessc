@@ -132,11 +132,12 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	def setStandard(self):
 		self.settings.setValue('both_or_standard','False')
 	
-	#Check autoCompile and enable the watching of the input less file and folder
-	#Todo watching of the folder
+	#Check autoCompile and enable the watching of the input less file
 	def autoCompile(self):
+		#If not checked
 		if self.ui.autoCompile.isChecked() == False:
 			self.settings.setValue('auto_compile','False')
+			#If previosuly was enabled the option this disable the watch of the file
 			try:
 				self.watcher.fileChanged.disconnect()
 			except (RuntimeError, TypeError, NameError):
@@ -147,6 +148,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 			self.watcher.addPath(self.settings.value('input_file'))
 			self.watcher.fileChanged.connect(self.compileIt)
 	
+	#Save the Ie Setting
 	def setOptionIE(self):
 		if self.ui.optionIE.isChecked() == False:
 			self.settings.setValue('option_IE','False')
@@ -155,6 +157,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 			self.settings.setValue('option_IE','True')
 			self.option['ie'] = '--no-ie-compat'
 	
+	#Compile the less file
 	def compileIt(self):
 		if os.path.isfile(self.settings.value('input_file')):
 			self.ui.log.setHtml('')
@@ -165,8 +168,10 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 				name += '.min.css'
 				complete = str(self.settings.value('less_path') + self.optionString() + '"' + self.settings.value('input_file') + '" "' + name + '"' )
 				command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"')
+				#Compile the min.css
 				os.system(complete)
 				self.proc.closeWriteChannel()
+				#Compile a standard css
 				self.proc.start(command)
 				self.ui.info.setText('File Min Output: ' + self.sizeof_fmt(name) + ' | File Standard: ' + self.sizeof_fmt(self.settings.value('output_file')) + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
 			else:
@@ -182,7 +187,8 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		
 		self.watcher.removePath(self.settings.value('input_file'))
 		self.watcher.addPath(self.settings.value('input_file'))
-
+	
+	#Open all the less file in the folder onf the input file
 	def openEditor(self):
 		open_file = self.settings.value('input_file')
 		#get all file less and open on the editor if this option are set
@@ -197,7 +203,8 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 						list_file = list_file + '"' + filename + '" '
 			open_file = list_file
 		os.system(str(self.settings.value('editor_path') + ' ' + open_file))
-
+	
+	#Show the log
 	def openLog(self):
 		if self.ui.log.isVisible() == True:
 			self.resize(503,213)
@@ -223,7 +230,8 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 			if num < 1024.0:
 				return str("%3.1f %s") % (num, x)
 			num /= 1024.0
-
+	
+	#Clean the output of lessc 
 	def replace_all(self,text):
 		#remove the shellcode of the color of the text
 		text = text.replace('[39m', '<br>').replace('[31m', '').replace('[22m', '').replace('[0m', '').replace('1b', '')
@@ -231,7 +239,8 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		text = text.replace('\\x', '').replace('\\n\\n\'', '').replace('\\n', '')
 		
 		return text.lstrip()
-		
+	
+	#Check the content of log
 	def checkLog(self):
 		stdout = str(self.proc.readAllStandardOutput())
 		check = stdout.strip()
@@ -241,10 +250,12 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		else:
 			self.ui.log.setHtml('OK!')
 	
+	#Update the title with less version
 	def updateTitle(self):
 		stdout = str(self.less_version.readAllStandardOutput())
 		self.setWindowTitle('PLessc - ' + self.replace_all(stdout.rstrip('\'')))
-		
+	
+	#Concate all the setting for lessc for use it on the command
 	def optionString(self):
 		string = ' '.join('{}'.format(val) for key, val in self.option.items())
 		return ' ' + string + ' '
