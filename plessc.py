@@ -144,7 +144,9 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 				pass
 		else:
 			self.settings.setValue('auto_compile','True')
+			#Clean the path added to file watching for fix a problem with Qt4
 			self.watcher.removePath(self.settings.value('input_file'))
+			#Re add of the path
 			self.watcher.addPath(self.settings.value('input_file'))
 			self.watcher.fileChanged.connect(self.compileIt)
 	
@@ -184,8 +186,9 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		else:
 			QMessageBox.critical(self.window(), "File input not exist","The file input choosen not exist!")
 		print(command)
-		
+		#Clean the path added to file watching for fix a problem with Qt4
 		self.watcher.removePath(self.settings.value('input_file'))
+		#Readd the path
 		self.watcher.addPath(self.settings.value('input_file'))
 	
 	#Open all the less file in the folder onf the input file
@@ -233,7 +236,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	
 	#Clean the output of lessc 
 	def replace_all(self,text):
-		#remove the shellcode of the color of the text
+		#remove the shellcode/ANSI of the color of the text
 		text = text.replace('[39m', '<br>').replace('[31m', '').replace('[22m', '').replace('[0m', '').replace('1b', '')
 		text = text.replace('[90m', '').replace('[27m', '').replace('[7m', '').replace('[1m', '').replace("b''",'').replace('\n\n','').replace('b\'','')
 		text = text.replace('\\x', '').replace('\\n\\n\'', '').replace('\\n', '')
@@ -244,6 +247,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	def checkLog(self):
 		stdout = str(self.proc.readAllStandardOutput())
 		check = stdout.strip()
+		#If the log not exmpty and length > of 3 print
 		if(check is not None and len(check) > 3):
 			self.ui.log.setHtml(self.replace_all(stdout))
 			self.openLog()
