@@ -91,7 +91,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 			self.ui.optionIE.setChecked(True)
 			self.option['ie'] = '--no-ie-compat'
 		#Resize the window for hide the space of log
-		self.resize(503,213)
+		self.resize(505,220)
 		self.show()
 	
 	#Function for open a dialog for choose the input less file
@@ -210,10 +210,10 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	#Show the log
 	def openLog(self):
 		if self.ui.log.isVisible() == True:
-			self.resize(503,213)
+			self.resize(505,220)
 			self.ui.log.hide()
 		else:
-			self.resize(503,389)
+			self.resize(505,430)
 			self.ui.log.show()
 
 	def openSetDialog(self):

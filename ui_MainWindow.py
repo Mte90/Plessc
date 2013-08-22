@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/mte90/Desktop/Prog/Plessc/MainWindow.ui'
 #
-# Created: Tue Aug 13 13:31:10 2013
+# Created: Thu Aug 22 23:44:34 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(505, 401)
+        MainWindow.resize(505, 430)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.gridLayout_2 = QtGui.QGridLayout(self.centralwidget)
@@ -65,6 +65,12 @@ class Ui_MainWindow(object):
         self.optionIE = QtGui.QCheckBox(self.verticalGroupBox)
         self.optionIE.setObjectName(_fromUtf8("optionIE"))
         self.verticalLayout.addWidget(self.optionIE)
+        self.label_3 = QtGui.QLabel(self.verticalGroupBox)
+        self.label_3.setStyleSheet(_fromUtf8(""))
+        self.label_3.setTextFormat(QtCore.Qt.RichText)
+        self.label_3.setOpenExternalLinks(True)
+        self.label_3.setObjectName(_fromUtf8("label_3"))
+        self.verticalLayout.addWidget(self.label_3)
         self.horizontalLayout_2.addWidget(self.verticalGroupBox)
         self.verticalGroupBox1 = QtGui.QGroupBox(self.centralwidget)
         self.verticalGroupBox1.setObjectName(_fromUtf8("verticalGroupBox1"))
@@ -141,7 +147,8 @@ class Ui_MainWindow(object):
         self.verticalGroupBox.setTitle(_translate("MainWindow", "Option ", None))
         self.setMinify.setText(_translate("MainWindow", "Minify", None))
         self.setYUI.setText(_translate("MainWindow", "YUI Compress", None))
-        self.optionIE.setText(_translate("MainWindow", "Disable IE compatibility checks", None))
+        self.optionIE.setText(_translate("MainWindow", "Enable IE compatibility checks", None))
+        self.label_3.setText(_translate("MainWindow", "<html><head/><body><p><a href=\"https://github.com/less/less.js/pull/1190\">More info for --ie-compat parameter</a></p></body></html>", None))
         self.verticalGroupBox1.setTitle(_translate("MainWindow", "Save Method", None))
         self.setStandard.setText(_translate("MainWindow", "Only minified version", None))
         self.setBoth.setText(_translate("MainWindow", "Standard and minified version", None))
@@ -151,7 +158,7 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "Output File", None))
         self.outputChoose.setText(_translate("MainWindow", "Choose", None))
         self.outputLog.setText(_translate("MainWindow", "Open Log", None))
-        self.autoCompile.setText(_translate("MainWindow", "Auto Compile - Check if input less file are updated and compile", None))
+        self.autoCompile.setText(_translate("MainWindow", "Auto Compile - Check if the input less file is updated and compile", None))
         self.menuSetting.setTitle(_translate("MainWindow", "Setting", None))
         self.menuInfo.setTitle(_translate("MainWindow", "Info", None))
         self.actionAbout_Plessc.setText(_translate("MainWindow", "About Plessc", None))

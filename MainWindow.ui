@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>505</width>
-    <height>401</height>
+    <height>430</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -76,7 +76,23 @@
            <item>
             <widget class="QCheckBox" name="optionIE">
              <property name="text">
-              <string>Disable IE compatibility checks</string>
+              <string>Enable IE compatibility checks</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_3">
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/less/less.js/pull/1190&quot;&gt;More info for --ie-compat parameter&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
+             </property>
+             <property name="openExternalLinks">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -166,7 +182,7 @@
       <item row="2" column="0">
        <widget class="QCheckBox" name="autoCompile">
         <property name="text">
-         <string>Auto Compile - Check if input less file are updated and compile</string>
+         <string>Auto Compile - Check if the input less file is updated and compile</string>
         </property>
        </widget>
       </item>
