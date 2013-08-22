@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/mte90/Desktop/Prog/Plessc/MainWindow.ui'
 #
-# Created: Thu Aug 22 23:44:34 2013
+# Created: Fri Aug 23 00:09:10 2013
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,6 +27,9 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(505, 430)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        MainWindow.setWindowIcon(icon)
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.gridLayout_2 = QtGui.QGridLayout(self.centralwidget)
