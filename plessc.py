@@ -11,7 +11,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	#var initialization
 	settings = QSettings('Mte90','Plessc')
 	settings.setFallbacksEnabled(False)
-	version = 'V 1.0 Beta 2'
+	version = 'V 1.0'
 	input_less = ''
 	output_css = ''
 	mysize = ''
@@ -224,7 +224,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		ui.exec_()
 
 	def openInfo(self):
-		QMessageBox.about(self.window(), "About Plessc","Plessc " + self.version + " <br><br>Software made by <a href='http://www.mte90.net'><b>Mte90</b></a><br><br><a href='https://github.com/Mte90/Plessc'>Official Site</a>")
+		QMessageBox.about(self.window(), "About Plessc","<p align='center'>Plessc " + self.version + " <br><br>By <a href='http://www.mte90.net'><b>Mte90</b></a><br><br>GUI in Python and Qt4 for compile less file<br><br>Tested with lessc 1.4.x of LESS.JS<br><br><small>If other compiler use the same parameters i think that works else some monkeys do it for you</small><br><br>License: GPL 3</p>")
 
 	#http://stackoverflow.com/questions/1094841/reusable-library-to-get-human-readable-version-of-file-size
 	def sizeof_fmt(self,file_):
