@@ -11,7 +11,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 	#var initialization
 	settings = QSettings('Mte90','Plessc')
 	settings.setFallbacksEnabled(False)
-	version = 'V 1.0'
+	version = 'v 1.0'
 	input_less = ''
 	output_css = ''
 	mysize = ''
@@ -46,8 +46,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		#hide log
 		self.ui.log.hide()
 		#check lessc version
-		self.less_version.closeWriteChannel()
-		self.less_version.start(self.settings.value('less_path'),['--version'])
+		self.loadVersion()
 		#Check the setting for load the path of the file
 		if self.settings.value('input_file') != -1:
 			self.input_less = self.settings.value('input_file')
@@ -221,7 +220,8 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		window = QDialog()
 		ui = SettingDialog()
 		ui.setupUi(window)
-		ui.exec_()
+		if ui.exec_() == 1:
+			self.loadVersion()
 
 	def openInfo(self):
 		QMessageBox.about(self.window(), "About Plessc","<p align='center'>Plessc " + self.version + " <br><br>By <a href='http://www.mte90.net'><b>Mte90</b></a><br><br>GUI in Python and Qt4 for compile less file<br><br>Tested with lessc 1.4.x of LESS.JS<br><br><small>If other compiler use the same parameters i think that works else some monkeys do it for you</small><br><br>License: GPL 3</p>")
@@ -254,6 +254,12 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
 		else:
 			self.ui.log.setHtml('OK!')
 	
+	#Execute the load of lessc version
+	def loadVersion(self):
+		self.less_version.closeWriteChannel()
+		self.setWindowTitle('PLessc - lessc not defined')
+		self.less_version.start(self.settings.value('less_path'),['--version'])
+		
 	#Update the title with less version
 	def updateTitle(self):
 		stdout = str(self.less_version.readAllStandardOutput())

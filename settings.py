@@ -19,13 +19,13 @@ class SettingDialog ( QDialog , Ui_Settings):
 		self.ui.chooseEditor.clicked.connect(self.openEditorDialog)
 		self.ui.buttonBox.accepted.connect(self.saveSetting)
 		#lessc path
-		if self.settings.contains('lessc_path') == 'False' or len(self.ui.lesscPath.text()) == 0:
+		if self.settings.contains('lessc_path') == 'False' or len(self.settings.value('less_path')) == 0:
 			self.settings.setValue('less_path','/usr/bin/lessc')
 		#editor path
-		if self.settings.contains('editor_path') == 'False':
+		if self.settings.contains('editor_path') == 'False' or len(self.settings.value('editor_path')) == 0:
 			self.settings.setValue('editor_path','/usr/bin/kate')
 		#checkbox for open all file in less file folder
-		if self.settings.contains('less_folder') == 'False' or len(self.ui.editor.text()) == 0:
+		if self.settings.contains('less_folder') == 'False':
 			self.settings.setValue('less_folder','False')
 		if self.settings.value('less_folder') == 'False':
 			self.ui.lessFolder.setChecked(False)
