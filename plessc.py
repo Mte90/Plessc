@@ -36,6 +36,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.ui.optionSourceMap.stateChanged.connect(self.setOptionSourceMap)
         self.ui.inputEdit.pressed.connect(self.openEditor)
         self.ui.outputLog.clicked.connect(self.openLog)
+        self.ui.lint.clicked.connect(self.lintLog)
         self.ui.compile.clicked.connect(self.compileIt)
         self.ui.inputFile.textChanged.connect(self.setInputFile)
         self.ui.outputFile.textChanged.connect(self.setOutputFile)
@@ -262,6 +263,13 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         text = text.replace('\\x', '').replace('\\n\\n\'', '').replace('\\n', '')
         
         return text.lstrip()
+        
+    #Execeute the lint and show it in the log area
+    def lintLog(self):
+        self.proc.closeWriteChannel()
+        self.proc.start(str(self.settings.value('less_path') + ' --lint "' + self.settings.value('input_file') + '"'))
+        self.openLog()
+        self.proc.closeWriteChannel()
     
     #Check the content of log
     def checkLog(self):
