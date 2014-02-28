@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/mte90/Desktop/Prog/Plessc/MainWindow.ui'
 #
-# Created: Sat Mar  1 00:32:34 2014
+# Created: Sat Mar  1 00:50:01 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -53,13 +53,9 @@ class Ui_MainWindow(object):
         self.verticalGroupBox.setObjectName(_fromUtf8("verticalGroupBox"))
         self.verticalLayout = QtGui.QVBoxLayout(self.verticalGroupBox)
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.setMinify = QtGui.QRadioButton(self.verticalGroupBox)
+        self.setMinify = QtGui.QCheckBox(self.verticalGroupBox)
         self.setMinify.setObjectName(_fromUtf8("setMinify"))
         self.verticalLayout.addWidget(self.setMinify)
-        self.setYUI = QtGui.QRadioButton(self.verticalGroupBox)
-        self.setYUI.setChecked(True)
-        self.setYUI.setObjectName(_fromUtf8("setYUI"))
-        self.verticalLayout.addWidget(self.setYUI)
         self.line = QtGui.QFrame(self.verticalGroupBox)
         self.line.setFrameShape(QtGui.QFrame.HLine)
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
@@ -165,7 +161,6 @@ class Ui_MainWindow(object):
         self.compile.setText(_translate("MainWindow", "Compile it!", None))
         self.verticalGroupBox.setTitle(_translate("MainWindow", "Option ", None))
         self.setMinify.setText(_translate("MainWindow", "Minify", None))
-        self.setYUI.setText(_translate("MainWindow", "YUI Compress", None))
         self.optionIE.setText(_translate("MainWindow", "Disable IE compatibility checks", None))
         self.label_3.setText(_translate("MainWindow", "<html><head/><body><p><a href=\"https://github.com/less/less.js/pull/1190\">More info for --ie-compat parameter</a></p></body></html>", None))
         self.optionSourceMap.setText(_translate("MainWindow", "SourceMap", None))

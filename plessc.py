@@ -28,12 +28,11 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         #Connect the function with the signal
         self.ui.inputChoose.clicked.connect(self.openInputDialog)
         self.ui.outputChoose.clicked.connect(self.openOutputDialog)
-        self.ui.setMinify.pressed.connect(self.setMinify)
-        self.ui.setYUI.pressed.connect(self.setYUICompress)
         self.ui.setBoth.pressed.connect(self.setBoth)
         self.ui.setStandard.pressed.connect(self.setStandard)
         self.ui.optionIE.stateChanged.connect(self.setOptionIE)
         self.ui.optionSourceMap.stateChanged.connect(self.setOptionSourceMap)
+        self.ui.setMinify.stateChanged.connect(self.setMinify)
         self.ui.inputEdit.pressed.connect(self.openEditor)
         self.ui.outputLog.clicked.connect(self.openLog)
         self.ui.lint.clicked.connect(self.lintLog)
@@ -61,14 +60,14 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.ui.inputFile.setText(self.input_less)
         self.ui.outputFile.setText(self.output_css)
         #Check the setting for the minify mode for the css file
-        if self.settings.value('min_or_yui') == 'False':
-            self.option['minify'] = '--yui-compress';
-            self.settings.setValue('min_or_yui','False')
-            self.ui.setYUI.toggle()
+        if self.settings.value('min') == 'False':
+            self.option['minify'] = ' ';
+            self.settings.setValue('min','False')
+            self.ui.setMinify.setChecked(False)
         else:
             self.option['minify'] = '-x'
-            self.settings.setValue('min_or_yui','True')
-            self.ui.setMinify.toggle()
+            self.settings.setValue('min','True')
+            self.ui.setMinify.setChecked(True)
         #Check for the export of the file
         if self.settings.value('both_or_standard') == 'False':
             self.settings.setValue('both_or_standard','False')
@@ -97,7 +96,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.option['sourcemap'] = ' '
         else:
             self.ui.optionSourceMap.setChecked(True)
-            self.option['sourcemap'] = '--sourcemap'
+            self.option['sourcemap'] = '--source-map'
         #Resize the window for hide the space of log
         self.resize(505,220)
         self.show()
@@ -121,16 +120,6 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     #Save the output file in the setting
     def setOutputFile(self):
         self.settings.setValue('output_file',self.ui.outputFile.text())
-
-    #Save the minify setting
-    def setMinify(self):
-        self.option['minify'] = '-x'
-        self.settings.setValue('min_or_yui','True')
-    
-    #Save the YUI compress setting
-    def setYUICompress(self):
-        self.option['minify'] = '--yui-compress'
-        self.settings.setValue('min_or_yui','False')
     
     #Save the output export of the css
     def setBoth(self):
@@ -174,7 +163,16 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.option['sourcemap'] = ' '
         else:
             self.settings.setValue('option_SourceMap','True')
-            self.option['sourcemap'] = '--sourcemap'
+            self.option['sourcemap'] = '--source-map'
+            
+    #Save the minify setting
+    def setMinify(self):
+        if self.ui.setMinify.isChecked() == False:
+            self.option['minify'] = ' '
+            self.settings.setValue('min','False')
+        else:
+            self.option['minify'] = '-x'
+            self.settings.setValue('min','True')
     
     #Compile the less file
     def compileIt(self):
@@ -193,18 +191,24 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
                 #Compile a standard css
                 self.proc.start(command)
                 self.proc.waitForFinished()
-                self.ui.info.setText('File Min Output: <b>' + self.sizeof_fmt(name) + '</b> | File Standard: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b> | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
                 self.proc.closeWriteChannel()
+                if os.path.isfile(name):
+                    self.ui.info.setText('File Min Output: <b>' + self.sizeof_fmt(name) + '</b> | File Standard: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b> | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
+                else:
+                    QMessageBox.critical(self.window(), "Output File not exist","The output file choosen not exist!")
             else:
                 #if standard = 0 False
                 command = str(self.settings.value('less_path') + self.optionString() + ' --verbose "' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"' )
                 self.proc.closeWriteChannel()
                 self.proc.start(command)
                 self.proc.waitForFinished()
-                self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>' + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
                 self.proc.closeWriteChannel()
+                if os.path.isfile(self.settings.value('output_file')):
+                    self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>' + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
+                else:
+                    QMessageBox.critical(self.window(), "Output File not exist","The output file choosen not exist!")
         else:
-            QMessageBox.critical(self.window(), "File input not exist","The file input choosen not exist!")
+            QMessageBox.critical(self.window(), "Input File not exist","The input file choosen not exist!")
         print(command)
         #Clean the path added to file watching for fix a problem with Qt4
         self.watcher.removePath(self.settings.value('input_file'))

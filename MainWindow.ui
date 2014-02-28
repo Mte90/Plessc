@@ -54,19 +54,9 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QRadioButton" name="setMinify">
+            <widget class="QCheckBox" name="setMinify">
              <property name="text">
               <string>Minify</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="setYUI">
-             <property name="text">
-              <string>YUI Compress</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
              </property>
             </widget>
            </item>
