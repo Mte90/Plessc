@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/mte90/Desktop/Prog/Plessc/MainWindow.ui'
 #
-# Created: Sat Mar  1 00:19:20 2014
+# Created: Sat Mar  1 00:32:34 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -94,6 +94,14 @@ class Ui_MainWindow(object):
         self.setBoth = QtGui.QRadioButton(self.verticalGroupBox1)
         self.setBoth.setObjectName(_fromUtf8("setBoth"))
         self.verticalLayout_2.addWidget(self.setBoth)
+        self.line_3 = QtGui.QFrame(self.verticalGroupBox1)
+        self.line_3.setFrameShape(QtGui.QFrame.HLine)
+        self.line_3.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_3.setObjectName(_fromUtf8("line_3"))
+        self.verticalLayout_2.addWidget(self.line_3)
+        self.lint = QtGui.QPushButton(self.verticalGroupBox1)
+        self.lint.setObjectName(_fromUtf8("lint"))
+        self.verticalLayout_2.addWidget(self.lint)
         self.horizontalLayout_2.addWidget(self.verticalGroupBox1)
         self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 1)
         self.gridLayout_3 = QtGui.QGridLayout()
@@ -164,6 +172,7 @@ class Ui_MainWindow(object):
         self.verticalGroupBox1.setTitle(_translate("MainWindow", "Save Method", None))
         self.setStandard.setText(_translate("MainWindow", "Only minified version", None))
         self.setBoth.setText(_translate("MainWindow", "Standard and minified version", None))
+        self.lint.setText(_translate("MainWindow", "Lint (Report only errors)", None))
         self.inputEdit.setText(_translate("MainWindow", "Edit", None))
         self.inputChoose.setText(_translate("MainWindow", "Choose", None))
         self.label.setText(_translate("MainWindow", "Input File", None))

@@ -140,6 +140,20 @@
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="Line" name="line_3">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="lint">
+             <property name="text">
+              <string>Lint (Report only errors)</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
