@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file '/home/mte90/Desktop/Prog/Plessc/MainWindow.ui'
 #
-# Created: Fri Aug 23 00:09:10 2013
-#      by: PyQt4 UI code generator 4.10.2
+# Created: Sat Mar  1 00:19:20 2014
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(505, 430)
+        MainWindow.resize(523, 459)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("logo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -74,6 +74,14 @@ class Ui_MainWindow(object):
         self.label_3.setOpenExternalLinks(True)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.verticalLayout.addWidget(self.label_3)
+        self.line_2 = QtGui.QFrame(self.verticalGroupBox)
+        self.line_2.setFrameShape(QtGui.QFrame.HLine)
+        self.line_2.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line_2.setObjectName(_fromUtf8("line_2"))
+        self.verticalLayout.addWidget(self.line_2)
+        self.optionSourceMap = QtGui.QCheckBox(self.verticalGroupBox)
+        self.optionSourceMap.setObjectName(_fromUtf8("optionSourceMap"))
+        self.verticalLayout.addWidget(self.optionSourceMap)
         self.horizontalLayout_2.addWidget(self.verticalGroupBox)
         self.verticalGroupBox1 = QtGui.QGroupBox(self.centralwidget)
         self.verticalGroupBox1.setObjectName(_fromUtf8("verticalGroupBox1"))
@@ -125,7 +133,7 @@ class Ui_MainWindow(object):
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 505, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 523, 22))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuSetting = QtGui.QMenu(self.menubar)
         self.menuSetting.setObjectName(_fromUtf8("menuSetting"))
@@ -150,8 +158,9 @@ class Ui_MainWindow(object):
         self.verticalGroupBox.setTitle(_translate("MainWindow", "Option ", None))
         self.setMinify.setText(_translate("MainWindow", "Minify", None))
         self.setYUI.setText(_translate("MainWindow", "YUI Compress", None))
-        self.optionIE.setText(_translate("MainWindow", "Enable IE compatibility checks", None))
+        self.optionIE.setText(_translate("MainWindow", "Disable IE compatibility checks", None))
         self.label_3.setText(_translate("MainWindow", "<html><head/><body><p><a href=\"https://github.com/less/less.js/pull/1190\">More info for --ie-compat parameter</a></p></body></html>", None))
+        self.optionSourceMap.setText(_translate("MainWindow", "SourceMap", None))
         self.verticalGroupBox1.setTitle(_translate("MainWindow", "Save Method", None))
         self.setStandard.setText(_translate("MainWindow", "Only minified version", None))
         self.setBoth.setText(_translate("MainWindow", "Standard and minified version", None))

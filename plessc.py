@@ -33,6 +33,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.ui.setBoth.pressed.connect(self.setBoth)
         self.ui.setStandard.pressed.connect(self.setStandard)
         self.ui.optionIE.stateChanged.connect(self.setOptionIE)
+        self.ui.optionSourceMap.stateChanged.connect(self.setOptionSourceMap)
         self.ui.inputEdit.pressed.connect(self.openEditor)
         self.ui.outputLog.clicked.connect(self.openLog)
         self.ui.compile.clicked.connect(self.compileIt)
@@ -89,6 +90,13 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         else:
             self.ui.optionIE.setChecked(True)
             self.option['ie'] = '--no-ie-compat'
+        #Setting for enable Sourcemap
+        if self.settings.value('option_SourceMap') == 'False':
+            self.ui.optionSourceMap.setChecked(False)
+            self.option['sourcemap'] = ' '
+        else:
+            self.ui.optionSourceMap.setChecked(True)
+            self.option['sourcemap'] = '--sourcemap'
         #Resize the window for hide the space of log
         self.resize(505,220)
         self.show()
@@ -158,18 +166,26 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.settings.setValue('option_IE','True')
             self.option['ie'] = '--no-ie-compat'
     
+    #Save the SourceMap
+    def setOptionSourceMap(self):
+        if self.ui.optionSourceMap.isChecked() == False:
+            self.settings.setValue('option_SourceMap','False')
+            self.option['sourcemap'] = ' '
+        else:
+            self.settings.setValue('option_SourceMap','True')
+            self.option['sourcemap'] = '--sourcemap'
+    
     #Compile the less file
     def compileIt(self):
-        self.ui.info.setText('')
         if os.path.isfile(self.settings.value('input_file')):
             self.ui.log.setHtml('')
+            self.ui.info.setText('Compiling...')
             if self.settings.value('both_or_standard') == 'True':
                 #if both save method True
                 name = os.path.splitext(self.settings.value('output_file'))[0]
-                self.ui.info.setText('Compiling...')
                 name += '.min.css'
                 complete = str(self.settings.value('less_path') + self.optionString() + '"' + self.settings.value('input_file') + '" "' + name + '"' )
-                command = str(self.settings.value('less_path') + ' --verbose "' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"')
+                command = str(self.settings.value('less_path') + self.optionString() + ' --verbose "' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"')
                 #Compile the min.css
                 os.system(complete)
                 self.proc.closeWriteChannel()
@@ -177,14 +193,15 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
                 self.proc.start(command)
                 self.proc.waitForFinished()
                 self.ui.info.setText('File Min Output: <b>' + self.sizeof_fmt(name) + '</b> | File Standard: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b> | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
+                self.proc.closeWriteChannel()
             else:
                 #if standard = 0 False
-                self.ui.info.setText('Compiling...')
-                command = str(self.settings.value('less_path') + self.optionString() + ' --verbose"' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"' )
+                command = str(self.settings.value('less_path') + self.optionString() + ' --verbose "' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"' )
                 self.proc.closeWriteChannel()
                 self.proc.start(command)
                 self.proc.waitForFinished()
                 self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>' + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
+                self.proc.closeWriteChannel()
         else:
             QMessageBox.critical(self.window(), "File input not exist","The file input choosen not exist!")
         print(command)
@@ -212,10 +229,10 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     #Show the log
     def openLog(self):
         if self.ui.log.isVisible() == True:
-            self.resize(505,220)
+            self.resize(523,239)
             self.ui.log.hide()
         else:
-            self.resize(505,430)
+            self.resize(523,459)
             self.ui.log.show()
 
     def openSetDialog(self):
@@ -270,7 +287,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         stdout = str(self.less_version.readAllStandardOutput())
         self.setWindowTitle('PLessc - ' + self.replace_all(stdout.rstrip('\'')))
     
-    #Concate all the setting for lessc for use it on the command
+    #Concate all the settings for lessc for use it in the command
     def optionString(self):
         string = ' '.join('{}'.format(val) for key, val in self.option.items())
         return ' ' + string + ' '
