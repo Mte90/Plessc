@@ -176,6 +176,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     
     #Compile the less file
     def compileIt(self):
+        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         if os.path.isfile(self.settings.value('input_file')):
             self.ui.log.setHtml('')
             self.ui.info.setText('Compiling...')
@@ -207,6 +208,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
                     self.ui.info.setText('File Output: <b>' + self.sizeof_fmt(self.settings.value('output_file')) + '</b>' + ' | ' + datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"))
                 else:
                     QMessageBox.critical(self.window(), "Output File not exist","The output file choosen not exist!")
+            QApplication.restoreOverrideCursor()
         else:
             QMessageBox.critical(self.window(), "Input File not exist","The input file choosen not exist!")
         print(command)
@@ -271,9 +273,11 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     #Execeute the lint and show it in the log area
     def lintLog(self):
         self.proc.closeWriteChannel()
+        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         self.proc.start(str(self.settings.value('less_path') + ' --lint "' + self.settings.value('input_file') + '"'))
         self.openLog()
         self.proc.closeWriteChannel()
+        QApplication.restoreOverrideCursor()
     
     #Check the content of log
     def checkLog(self):
