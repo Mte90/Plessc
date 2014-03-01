@@ -11,10 +11,15 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     #var initialization
     settings = QSettings('Mte90','Plessc')
     settings.setFallbacksEnabled(False)
+    history = QSettings('Mte90','Plessc_History')
+    history.setFallbacksEnabled(False)
     version = 'v 1.1'
     input_less = ''
     output_css = ''
     mysize = ''
+    history_field = {}
+    history_field['input'] = []
+    history_field['output'] = []
     option = {}
     proc = QProcess()
     less_version = QProcess()
@@ -37,8 +42,6 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.ui.outputLog.clicked.connect(self.openLog)
         self.ui.lint.clicked.connect(self.lintLog)
         self.ui.compile.clicked.connect(self.compileIt)
-        self.ui.inputFile.textChanged.connect(self.setInputFile)
-        self.ui.outputFile.textChanged.connect(self.setOutputFile)
         self.ui.menuInfo.triggered.connect(self.openInfo)
         self.ui.menuSetting.triggered.connect(self.openSetDialog)
         self.proc.finished.connect(self.checkLog)
@@ -99,8 +102,27 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.option['sourcemap'] = '--source-map'
         #Resize the window for hide the space of log
         self.resize(505,220)
+        #Load History
+        self.loadHistory()
         self.show()
-    
+        
+    def loadHistory(self):
+        #load history
+        self.history_field['input'] = str(self.history.value('input')).split(';')
+        self.history_field['output'] = str(self.history.value('output')).split(';')
+        completer_input = QCompleter(self.history_field['input'],self.ui.inputFile)
+        self.ui.inputFile.setCompleter(completer_input)
+        completer_output = QCompleter(self.history_field['output'],self.ui.outputFile)
+        self.ui.outputFile.setCompleter(completer_output)
+        self.ui.inputFile.textChanged.connect(self.setInputFile)
+        self.ui.outputFile.textChanged.connect(self.setOutputFile)
+
+    def addHistory(self,field,text):
+        #add the path in the history if not exist
+        if text not in self.history_field[field]:
+            self.history_field[field].append(text)
+            self.history.setValue(field,str(self.history_field[field]))
+
     #Function for open a dialog for choose the input less file
     def openInputDialog(self):
         self.input_less = QFileDialog.getOpenFileName(self, 'Choose less file',self.ui.inputFile.text(),'LESS file (*.less)')
@@ -116,10 +138,12 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     #Save the input file in the setting
     def setInputFile(self):
         self.settings.setValue('input_file',self.ui.inputFile.text())
+        self.addHistory('input',self.ui.inputFile.text())
     
     #Save the output file in the setting
     def setOutputFile(self):
         self.settings.setValue('output_file',self.ui.outputFile.text())
+        self.addHistory('output',self.ui.outputFile.text())
     
     #Save the output export of the css
     def setBoth(self):
