@@ -108,20 +108,22 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         
     def loadHistory(self):
         #load history
-        self.history_field['input'] = str(self.history.value('input')).split(';')
-        self.history_field['output'] = str(self.history.value('output')).split(';')
+        if str(self.history.value('input')) != 'None':
+            self.history_field['input'] = str(self.history.value('input')).split(';')
+        if str(self.history.value('output')) != 'None':
+            self.history_field['output'] = str(self.history.value('output')).split(';')
         completer_input = QCompleter(self.history_field['input'],self.ui.inputFile)
         self.ui.inputFile.setCompleter(completer_input)
         completer_output = QCompleter(self.history_field['output'],self.ui.outputFile)
         self.ui.outputFile.setCompleter(completer_output)
-        self.ui.inputFile.textChanged.connect(self.setInputFile)
-        self.ui.outputFile.textChanged.connect(self.setOutputFile)
+        self.ui.inputFile.editingFinished.connect(self.setInputFile)
+        self.ui.outputFile.editingFinished.connect(self.setOutputFile)
 
     def addHistory(self,field,text):
         #add the path in the history if not exist
         if text not in self.history_field[field]:
             self.history_field[field].append(text)
-            self.history.setValue(field,str(self.history_field[field]))
+            self.history.setValue(field,';'.join(self.history_field[field]))
 
     #Function for open a dialog for choose the input less file
     def openInputDialog(self):
@@ -275,7 +277,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
             self.loadVersion()
 
     def openInfo(self):
-        QMessageBox.about(self.window(), "About Plessc","<p align='center'>Plessc " + self.version + " <br><br>By <a href='http://www.mte90.net'><b>Mte90</b></a><br><br>GUI in Python and Qt4 for compile less file<br><br>Tested with lessc 1.4.x of LESS.JS<br><br><small>If other compiler use the same parameters i think that works else some monkeys do it for you</small><br><br>License: GPL 3</p>")
+        QMessageBox.about(self.window(), "About Plessc","<p align='center'>Plessc " + self.version + " <br><br>By <a href='http://www.mte90.net'><b>Mte90</b></a><br><br>GUI in Python and Qt4 for compile less file<br><br>Tested with lessc 1.7.x of LESS.JS<br><br><small>If other compilers use the same parameters i think that works else some monkeys do it for you</small><br><br>License: GPL 3</p>")
 
     #http://stackoverflow.com/questions/1094841/reusable-library-to-get-human-readable-version-of-file-size
     def sizeof_fmt(self,file_):
