@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/mte90/Desktop/Prog/Plessc/MainWindow.ui'
 #
-# Created: Sat Mar  1 00:50:01 2014
+# Created: Sat Mar  1 01:03:10 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -162,7 +162,7 @@ class Ui_MainWindow(object):
         self.verticalGroupBox.setTitle(_translate("MainWindow", "Option ", None))
         self.setMinify.setText(_translate("MainWindow", "Minify", None))
         self.optionIE.setText(_translate("MainWindow", "Disable IE compatibility checks", None))
-        self.label_3.setText(_translate("MainWindow", "<html><head/><body><p><a href=\"https://github.com/less/less.js/pull/1190\">More info for --ie-compat parameter</a></p></body></html>", None))
+        self.label_3.setText(_translate("MainWindow", "<html><head/><body><p><a href=\"https://github.com/less/less.js/pull/1190\"><span style=\" text-decoration: underline; color:#0057ae;\">More info for --ie-no-compat parameter</span></a></p></body></html>", None))
         self.optionSourceMap.setText(_translate("MainWindow", "SourceMap", None))
         self.verticalGroupBox1.setTitle(_translate("MainWindow", "Save Method", None))
         self.setStandard.setText(_translate("MainWindow", "Only minified version", None))

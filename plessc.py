@@ -184,7 +184,7 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
                 name = os.path.splitext(self.settings.value('output_file'))[0]
                 name += '.min.css'
                 complete = str(self.settings.value('less_path') + self.optionString() + '"' + self.settings.value('input_file') + '" "' + name + '"' )
-                command = str(self.settings.value('less_path') + self.optionString() + ' --verbose "' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"')
+                command = str(self.settings.value('less_path') + self.optionString('minify') + ' --verbose "' + self.settings.value('input_file') + '" "' + self.settings.value('output_file') + '"')
                 #Compile the min.css
                 os.system(complete)
                 self.proc.closeWriteChannel()
@@ -234,10 +234,10 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
     #Show the log
     def openLog(self):
         if self.ui.log.isVisible() == True:
-            self.resize(523,239)
+            self.resize(531,239)
             self.ui.log.hide()
         else:
-            self.resize(523,459)
+            self.resize(531,459)
             self.ui.log.show()
 
     def openSetDialog(self):
@@ -300,7 +300,10 @@ class MainWindow ( QMainWindow , Ui_MainWindow):
         self.setWindowTitle('PLessc - ' + self.replace_all(stdout.rstrip('\'')))
     
     #Concate all the settings for lessc for use it in the command
-    def optionString(self):
+    def optionString(self,remove=[]):
+        #remove the parameter
+        if remove != []:
+            del self.option[remove]
         string = ' '.join('{}'.format(val) for key, val in self.option.items())
         return ' ' + string + ' '
         
